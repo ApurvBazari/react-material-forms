@@ -13,98 +13,109 @@ import sampleData from './sampleData'
 
 class App extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props);
 		this.state = {
 			data: {},
 			isValid: false,
-		}
+			errorStates: {},
+		};
 	}
 
 	validateRegex = (pattern, value) => {
-		const patt = new RegExp(pattern)
-		const result = patt.test(value)
-		return result
-	}
+		const patt = new RegExp(pattern);
+		const result = patt.test(value);
+		return result;
+	};
 
-	validate = (value) => {
+	validateField = (fieldName, value, pattern, errorText) => {
+		let isValid = true;
+		if (pattern) {
+			isValid = this.validateRegex(pattern, value);
+      this.setState({
+        errorStates: {
+				  ...this.state.errorStates,
+				  [fieldName]: isValid ? false : errorText,
+        }    
+      });
+    }
+	};
+
+	validateForm = (fieldname, value) => {
 		var hasError = true;
-		this.props.fields.map(field => {
+		sampleData.registerFields.map(field => {
 			if (field.isRequired) {
-				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false
-				if (!flag) hasError = false
+				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false;
+				if (!flag) hasError = false;
 			}
 			if (field.pattern) {
-				const flag = this.validateRegex(field.pattern, this.state.data[field.name])
-				if (!flag) hasError = false
+				const flag = this.validateRegex(field.pattern, this.state.data[field.name]);
+				if (!flag) hasError = false;
 			}
-		})
+		});
 		if (hasError) {
 			this.setState({
 				isValid: true,
-			})
+			});
 		} else {
 			this.setState({
 				isValid: false,
-			})
+			});
 		}
-		return hasError
-	}
+		return hasError;
+	};
 
 	handleSubmit = () => {
-		const isValid = this.validate(this.state.data)
-		if (isValid) this.props.onSubmit(this.state.data)
-		else alert('Fill the Form Correctly')
-	}
+		const isValid = this.validate(this.state.data);
+		if (isValid) this.props.onSubmit(this.state.data);
+		else alert('Fill the Form Correctly');
+	};
 
-	onChange = (fieldName, e) => {
-		let value = e.target.value
+	onChange = (e, fieldName, fieldPattern, errorText) => {
+		let value = e.target.value;
 		this.setState(
 			{
 				data: {
 					...this.state.data,
 					[fieldName]: value,
 				},
-			}
-			//, () => this.validate()
+			},
+			() => this.validateField(fieldName, value, fieldPattern, errorText)
 		);
-	}
+	};
 
 	render() {
-		return (
-			<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-				{sampleData.registerFields &&
-					sampleData.registerFields.map(field => (
-						<FormGroup key={field.name}>
+		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				{sampleData.registerFields && sampleData.registerFields.map(field => (
+						<FormGroup key={field.name} style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
 							<FormControlLabel
 								control={
 									<TextInput
+                    style={{width: '100%'}}
 										name={field.name}
 										key={field.name}
 										label={field.label}
 										type={field.type}
 										placeholder={field.placeholder}
-										pattern={field.pattern}
 										required={field.isRequired}
-										error={field.errorText}
-										onChange={e => this.onChange(field.name, e)}
+										error={this.state.errorStates[field.name] ? true : false}
+										onChange={e =>
+											this.onChange(e, field.name, field.pattern, field.errorText)
+										}
 									/>
 								}
 							/>
+							{this.state.errorStates[field.name] && (
+								<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+									{this.state.errorStates[field.name]}
+								</FormHelperText>
+							)}
 						</FormGroup>
 					))}
-				<Button
-					style={{ position: 'fixed', bottom: '0' }}
-					disabled={!this.state.isValid}
-					variant="raised"
-					color="primary"
-					onClick={this.handleSubmit}
-					fullWidth
-				>
+				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 					Submit
 				</Button>
 				{!sampleData.registerFields && <div>Could not load Form from the server!!</div>}
-			</div>
-		);
+			</div>;
 	}
 }
 
