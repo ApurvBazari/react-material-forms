@@ -127,9 +127,13 @@ class App extends React.Component {
 
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-				{sampleData.registerFields && sampleData.registerFields.map(field => (
-						<TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-					))}
+				{sampleData.registerFields && sampleData.registerFields.map(field => {
+					switch(field.type) {
+						case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+						case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+						case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+					}
+				})}
 				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 					Submit
 				</Button>
