@@ -11,6 +11,67 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 
 import sampleData from './sampleData'
 
+export class TextField extends React.PureComponent {
+	validateRegex = (pattern, value) => {
+		const patt = new RegExp(pattern);
+		const result = patt.test(value);
+		return result;
+	};
+
+	validateField = (fieldName, value, pattern, errorText) => {
+		const isValid = this.validateRegex(pattern, value);
+		if(!isValid) {
+			return false
+		}
+		return true
+	};
+
+	onChange = (e, fieldName, fieldPattern, errorText) => {
+		const value = e.target.value
+		const isValid = this.validateField(fieldName, value, fieldPattern, errorText)
+		if(isValid) {
+			this.props.onBlur(null, value, fieldName)
+		}
+	}
+
+	onBlur = (e, name, pattern, errorText) => {
+		console.log('Now validate')
+		const value = e.target.value
+		const isValid = this.validateField(name, value, pattern, errorText)
+		isValid ? this.props.onBlur(null, value, name) : this.props.onBlur(errorText, value, name)
+	}
+
+	render() {
+		const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
+		const {errorStates} = this.props
+		return (
+			<FormGroup style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
+				<FormControlLabel
+					control={
+						<TextInput
+							style={{ width: '100%' }}
+							name={name}
+							label={label}
+							type={type}
+							placeholder={placeholder}
+							required={isRequired}
+							error={errorStates[name] ? true : false}
+							onBlur={e =>
+								this.onBlur(e, name, pattern, errorText)
+							}
+							onChange={e => this.onChange(e, name, pattern, errorText)}
+						/>
+					}
+				/>
+				{errorStates[name] && (
+					<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+						{errorStates[name]}
+					</FormHelperText>
+				)}
+			</FormGroup>
+		)
+	}
+}
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -20,25 +81,6 @@ class App extends React.Component {
 			errorStates: {},
 		};
 	}
-
-	validateRegex = (pattern, value) => {
-		const patt = new RegExp(pattern);
-		const result = patt.test(value);
-		return result;
-	};
-
-	validateField = (fieldName, value, pattern, errorText) => {
-		let isValid = true;
-		if (pattern) {
-			isValid = this.validateRegex(pattern, value);
-      this.setState({
-        errorStates: {
-				  ...this.state.errorStates,
-				  [fieldName]: isValid ? false : errorText,
-        }    
-      });
-    }
-	};
 
 	validateForm = (fieldname, value) => {
 		var hasError = true;
@@ -70,46 +112,23 @@ class App extends React.Component {
 		else alert('Fill the Form Correctly');
 	};
 
-	onChange = (e, fieldName, fieldPattern, errorText) => {
-		let value = e.target.value;
-		this.setState(
-			{
-				data: {
-					...this.state.data,
-					[fieldName]: value,
-				},
+	onTextBlur = (errorText, fieldValue, fieldName) => {
+		this.setState({
+			errorStates: {
+				...this.state.errorStates,
+				[fieldName]: errorText ? errorText : null
 			},
-			() => this.validateField(fieldName, value, fieldPattern, errorText)
-		);
-	};
+			data: {
+				...this.state.data,
+				[fieldName]: fieldValue
+			}
+		})
+	}
 
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				{sampleData.registerFields && sampleData.registerFields.map(field => (
-						<FormGroup key={field.name} style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
-							<FormControlLabel
-								control={
-									<TextInput
-                    style={{width: '100%'}}
-										name={field.name}
-										key={field.name}
-										label={field.label}
-										type={field.type}
-										placeholder={field.placeholder}
-										required={field.isRequired}
-										error={this.state.errorStates[field.name] ? true : false}
-										onChange={e =>
-											this.onChange(e, field.name, field.pattern, field.errorText)
-										}
-									/>
-								}
-							/>
-							{this.state.errorStates[field.name] && (
-								<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
-									{this.state.errorStates[field.name]}
-								</FormHelperText>
-							)}
-						</FormGroup>
+						<TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 					))}
 				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 					Submit
