@@ -26,6 +26,29 @@ const sampleData = {
             "errorText": "Enter 10 digit number"
         },
         {
+            "name": "gender",
+            "type": "radioGroup",
+            "label": "Gender",
+            "required": true,
+            "payload": [
+                {
+                    "name": "male",
+                    "label": "Male",
+                    "disabled": false,
+                },
+                {
+                    "name": "female", 
+                    "label":"Female",
+                    "disabled": false 
+                },
+                {
+                    "name": "others",
+                    "label":"Others",
+                    "disabled": true 
+                }
+            ]
+        },
+        {
             "name": "password",
             "type": "password",
             "label": "Password",

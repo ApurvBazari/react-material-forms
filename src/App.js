@@ -3,6 +3,9 @@ import PropTypes from 'prop-types';
 
 import Button from '@material-ui/core/Button';
 import TextInput from '@material-ui/core/TextField';
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -45,7 +48,7 @@ export class TextField extends React.PureComponent {
 		const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
 		const {errorStates} = this.props
 		return (
-			<FormGroup style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
+			<div>
 				<FormControlLabel
 					control={
 						<TextInput
@@ -68,9 +71,52 @@ export class TextField extends React.PureComponent {
 						{errorStates[name]}
 					</FormHelperText>
 				)}
-			</FormGroup>
+			</div>
 		)
 	}
+}
+
+export class FormRadioGroup extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.state = {
+			value: this.props.initialvalue ? this.props.initialvalue : null,
+		};
+	}
+
+	handleChange = event => {
+		this.setState({
+			value: event.target.value
+		});
+	};
+
+	render() {
+    const { fieldData, errorStates } = this.props;
+	const {name} = fieldData
+	
+    return (
+      <div className="root">
+		<FormControl component="fieldset" required={fieldData.required} className="formControl">
+			<FormLabel component="legend">{fieldData.label}</FormLabel>
+			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={this.handleChange}>
+				{fieldData.payload.map(field => {
+					return <FormControlLabel
+								value={field.name}
+								disabled={field.disabled}
+								control={<Radio color="primary" />}
+								label={field.label}
+							/>
+				})}
+			</RadioGroup>
+		</FormControl>
+		{errorStates[name] && (
+			<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+				{errorStates[name]}
+			</FormHelperText>
+		)}
+      </div>
+    );
+  }
 }
 class App extends React.Component {
 	constructor(props) {
@@ -127,13 +173,16 @@ class App extends React.Component {
 
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+				<FormGroup style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
 				{sampleData.registerFields && sampleData.registerFields.map(field => {
 					switch(field.type) {
 						case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 						case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 						case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+						case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} />
 					}
 				})}
+				</FormGroup>
 				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 					Submit
 				</Button>
