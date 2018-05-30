@@ -48,7 +48,7 @@ export class TextField extends React.PureComponent {
 		const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
 		const {errorStates} = this.props
 		return (
-			<div>
+			<div style={{ padding: '10px', width: '100%', position: 'relative'}}>
 				<FormControlLabel
 					control={
 						<TextInput
@@ -67,7 +67,7 @@ export class TextField extends React.PureComponent {
 					}
 				/>
 				{errorStates[name] && (
-					<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+					<FormHelperText style={{ color: 'red', position: 'absolute', left: '-3px' }}>
 						{errorStates[name]}
 					</FormHelperText>
 				)}
@@ -95,7 +95,7 @@ export class FormRadioGroup extends React.PureComponent {
 	const {name} = fieldData
 	
     return (
-      <div className="root">
+      <div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
 			<FormLabel component="legend">{fieldData.label}</FormLabel>
 			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={this.handleChange}>
@@ -174,14 +174,15 @@ class App extends React.Component {
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
 				<FormGroup style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
-				{sampleData.registerFields && sampleData.registerFields.map(field => {
-					switch(field.type) {
-						case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-						case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-						case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-						case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} />
-					}
-				})}
+					<div className="formHeading">{sampleData.label}</div>
+					{sampleData.registerFields && sampleData.registerFields.map(field => {
+						switch(field.type) {
+							case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+							case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+							case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} />
+						}
+					})}
 				</FormGroup>
 				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 					Submit

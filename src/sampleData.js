@@ -1,4 +1,6 @@
 const sampleData = {
+    "label": "Sample Form",
+    "name": "form1",
     "registerFields": [
         {
             "name": "name",
