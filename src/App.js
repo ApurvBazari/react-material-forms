@@ -5,6 +5,7 @@ import Button from '@material-ui/core/Button';
 import TextInput from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
+import Checkbox from '@material-ui/core/Checkbox';
 
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -85,10 +86,10 @@ export class FormRadioGroup extends React.PureComponent {
 		};
 	}
 
-	handleChange = event => {
-		this.setState({
-			value: event.target.value
-		});
+	handleChange = (event, name) => {
+		const value = event.target.value
+		this.setState({value});
+		this.props.onChange(name, value)
 	};
 
 	render() {
@@ -99,7 +100,7 @@ export class FormRadioGroup extends React.PureComponent {
       <div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
 			<FormLabel component="legend">{fieldData.label}</FormLabel>
-			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={this.handleChange}>
+			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={e => this.handleChange(e, fieldData.name)}>
 				{fieldData.payload.map(field => {
 					return <FormControlLabel
 								value={field.name}
@@ -119,6 +120,46 @@ export class FormRadioGroup extends React.PureComponent {
     );
   }
 }
+
+export class CheckboxGroup extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.state = {
+			data: []
+		}
+	}
+
+	handleChange = name => event => {
+		const value = event.target.value
+		this.props.onClick(name, value)
+	}
+
+  render() {
+		const {fieldData, errorStates} = this.props
+		const {name} = fieldData		
+		return (
+			<div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
+				<FormControl component="fieldset">
+					<FormLabel component="legend">{fieldData.label}</FormLabel>
+						{fieldData.payload.map(field => {
+							return <FormControlLabel
+								control ={
+									<Checkbox
+										checked={this.state.data[field]}
+										onChange={this.handleChange(name)}
+										value={field}
+									/>
+								}
+								label={field}
+							/>
+						})}
+					{errorStates[name] && (<FormHelperText>{errorStates[name]}</FormHelperText>)}
+				</FormControl>
+			</div>
+			);
+		}
+	}
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -172,6 +213,26 @@ class App extends React.Component {
 		})
 	}
 
+	onRadioChange = (name, value) => {
+		this.setState({
+			data: {
+				...this.state.data,
+				[name]: value,
+			}
+		})
+	}
+	
+	onCheckboxGroupClick = (name, value) => {
+		const currentData = this.state.data[name] ? this.state.data[name] : []
+		currentData.push(value)
+		this.setState({
+			data:{
+				...this.state.data,
+				[name]: currentData
+			}
+		})
+	}
+
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
 				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
@@ -181,7 +242,8 @@ class App extends React.Component {
 							case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 							case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 							case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} />
+							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
+							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
 						}
 					})}
 				</FormGroup>

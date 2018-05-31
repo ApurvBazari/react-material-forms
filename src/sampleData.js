@@ -28,6 +28,14 @@ const sampleData = {
             "errorText": "Enter 10 digit number"
         },
         {
+            "name": "interests",
+            "type": "checkboxGroup",
+            "label": "Choose your Interests : ",
+            "required": true,
+            "payload": ["sports", "games", "cooking", "coding", "music"],
+            "errorText": "Select atleast one Value"
+        },
+        {
             "name": "gender",
             "type": "radioGroup",
             "label": "Gender",
