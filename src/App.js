@@ -75,11 +75,9 @@ export class TextField extends React.PureComponent {
 						/>
 					}
 				/>
-				{errorStates[name] && (
-					<FormHelperText style={{ color: 'red'}}>
-						{errorStates[name]}
-					</FormHelperText>
-				)}
+				<FormHelperText style={{ color: 'red'}}>
+					{errorStates[name]}
+				</FormHelperText>
 			</div>
 		)
 	}
