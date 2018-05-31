@@ -28,11 +28,19 @@ const sampleData = {
             "errorText": "Enter 10 digit number"
         },
         {
+            "name": "languages",
+            "type": "multipleSelect",
+            "label": "Languages you know : ",
+            "errorText": "Select atleast one value",
+            "required": true,
+            "payload": ["English", "Urdu", "Hindi", "Bengali", "Marathi", "Hebrew"]
+        },
+        {
             "name": "interests",
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
-            "payload": ["sports", "games", "cooking", "coding", "music"],
+            "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
         {

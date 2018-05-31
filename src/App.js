@@ -6,6 +6,13 @@ import TextInput from '@material-ui/core/TextField';
 import Radio from '@material-ui/core/Radio';
 import RadioGroup from '@material-ui/core/RadioGroup';
 import Checkbox from '@material-ui/core/Checkbox';
+import Input from '@material-ui/core/Input';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import ListItemText from '@material-ui/core/ListItemText';
+import Select from '@material-ui/core/Select';	
+import Chip from '@material-ui/core/Chip';
+
 
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
@@ -134,7 +141,7 @@ export class CheckboxGroup extends React.PureComponent {
 		this.props.onClick(name, value)
 	}
 
-  render() {
+  	render() {
 		const {fieldData, errorStates} = this.props
 		const {name} = fieldData		
 		return (
@@ -156,10 +163,50 @@ export class CheckboxGroup extends React.PureComponent {
 					{errorStates[name] && (<FormHelperText>{errorStates[name]}</FormHelperText>)}
 				</FormControl>
 			</div>
-			);
+		);
+	}
+}
+
+export class MultiSelect extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.state = {
+			value: []
 		}
 	}
 
+	handleChange = name => e => {
+		// console.log(e.target.value)
+		const value = e.target.value
+		this.setState({value})
+		this.props.onClick(name, value)
+	}
+
+	render() {
+		const {fieldData} = this.props
+		const {payload} = fieldData
+
+		return (
+			<div>
+				<FormControl component="fieldset" fullWidth>
+					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
+					<Select
+						multiple
+						value={this.state.value}
+						onChange={this.handleChange(fieldData.name)}
+						input={<Input id="select-multiple" />}
+					>
+					{payload.map(value => (
+						<MenuItem key={value} value={value}>
+							{value}
+						</MenuItem>
+					))}
+					</Select>
+				</FormControl>
+			</div>
+		)
+	}
+}
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -233,6 +280,15 @@ class App extends React.Component {
 		})
 	}
 
+	onSelectClick = (name, value) => {
+		this.setState({
+			data: {
+				...this.state.data,
+				[name]: value
+			}
+		})
+	}
+
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
 				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
@@ -244,6 +300,7 @@ class App extends React.Component {
 							case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
 							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
+							case 'multipleSelect': return <MultiSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
 						}
 					})}
 				</FormGroup>
