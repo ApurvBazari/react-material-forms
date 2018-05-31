@@ -29,7 +29,8 @@ const sampleData = {
         },
         {
             "name": "languages",
-            "type": "multipleSelect",
+            "type": "select",
+            "isMultiple": true,
             "label": "Languages you know : ",
             "errorText": "Select atleast one value",
             "required": true,

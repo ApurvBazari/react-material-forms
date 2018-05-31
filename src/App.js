@@ -167,7 +167,7 @@ export class CheckboxGroup extends React.PureComponent {
 	}
 }
 
-export class MultiSelect extends React.PureComponent {
+export class FormSelect extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
@@ -191,7 +191,7 @@ export class MultiSelect extends React.PureComponent {
 				<FormControl component="fieldset" fullWidth>
 					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
 					<Select
-						multiple
+						multiple = {fieldData.isMultiple ? true : false}
 						value={this.state.value}
 						onChange={this.handleChange(fieldData.name)}
 						input={<Input id="select-multiple" />}
@@ -300,7 +300,7 @@ class App extends React.Component {
 							case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
 							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
-							case 'multipleSelect': return <MultiSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
+							case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
 						}
 					})}
 				</FormGroup>
