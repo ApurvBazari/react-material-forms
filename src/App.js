@@ -50,6 +50,7 @@ export class TextField extends React.PureComponent {
 		return (
 			<div style={{ padding: '10px', width: '100%', position: 'relative'}}>
 				<FormControlLabel
+					style={{width: '100%'}}
 					control={
 						<TextInput
 							style={{ width: '100%' }}
@@ -67,7 +68,7 @@ export class TextField extends React.PureComponent {
 					}
 				/>
 				{errorStates[name] && (
-					<FormHelperText style={{ color: 'red', position: 'absolute', left: '-3px' }}>
+					<FormHelperText style={{ color: 'red'}}>
 						{errorStates[name]}
 					</FormHelperText>
 				)}
@@ -172,9 +173,9 @@ class App extends React.Component {
 	}
 
 	render() {
-		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-				<FormGroup style={{ padding: '5px', width: '100%', marginLeft: '50px', position: 'relative' }}>
-					<div className="formHeading">{sampleData.label}</div>
+		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
+				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
+					<div style={{marginTop: '10px'}} className="formHeading">{sampleData.label}</div>
 					{sampleData.registerFields && sampleData.registerFields.map(field => {
 						switch(field.type) {
 							case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
