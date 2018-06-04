@@ -1,23 +1,28 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Button from '@material-ui/core/Button';
-import TextInput from '@material-ui/core/TextField';
-import Radio from '@material-ui/core/Radio';
-import RadioGroup from '@material-ui/core/RadioGroup';
-import Checkbox from '@material-ui/core/Checkbox';
-import Input from '@material-ui/core/Input';
-import InputLabel from '@material-ui/core/InputLabel';
-import MenuItem from '@material-ui/core/MenuItem';
-import ListItemText from '@material-ui/core/ListItemText';
-import Select from '@material-ui/core/Select';	
-import Chip from '@material-ui/core/Chip';
-
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import FormHelperText from '@material-ui/core/FormHelperText';
+import { Button,
+			TextField as TextInput,
+			Radio,
+			RadioGroup,
+			Checkbox,
+			Input,
+			InputLabel,
+			MenuItem,
+			ListItemText,
+			Select,
+			Chip,
+			Stepper,
+			Step,
+			StepLabel,
+			StepConnector,
+			Typography,
+			FormLabel,
+			FormControl,
+			FormGroup,
+			FormControlLabel,
+			FormHelperText
+		} from '@material-ui/core'
 
 import sampleData from './sampleData'
 
@@ -103,7 +108,7 @@ export class FormRadioGroup extends React.PureComponent {
 	const {name} = fieldData
 	
     return (
-      <div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
+	 <div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
 			<FormLabel component="legend">{fieldData.label}</FormLabel>
 			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={e => this.handleChange(e, fieldData.name)}>
@@ -122,9 +127,9 @@ export class FormRadioGroup extends React.PureComponent {
 				{errorStates[name]}
 			</FormHelperText>
 		)}
-      </div>
+	 </div>
     );
-  }
+	}
 }
 
 export class CheckboxGroup extends React.PureComponent {
@@ -140,9 +145,9 @@ export class CheckboxGroup extends React.PureComponent {
 		this.props.onClick(name, value)
 	}
 
-  	render() {
+	render() {
 		const {fieldData, errorStates} = this.props
-		const {name} = fieldData		
+		const {name} = fieldData
 		return (
 			<div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
@@ -207,10 +212,35 @@ export class FormSelect extends React.PureComponent {
 	}
 }
 
+export class FormStepper extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.state = {
+			currentStep: 0,
+		}
+	}
+
+	render() {
+		const {formData, currentStep, isError, isComplete} = this.props
+
+		return (
+			<Stepper style={{width: '100%'}} activeStep={currentStep}>
+				{formData.map(form => {
+					return (
+						<Step key={form.name}>
+							<StepLabel error={isError} completed={isComplete} alternativeLabel>{form.label}</StepLabel>
+						</Step>
+					)
+				})}
+			</Stepper>
+		)
+	}
+}
 class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			currentCount: 0,
 			data: {},
 			isValid: false,
 			errorStates: {},
@@ -268,7 +298,7 @@ class App extends React.Component {
 			}
 		})
 	}
-	
+
 	onCheckboxGroupClick = (name, value) => {
 		const currentData = this.state.data[name] ? this.state.data[name] : []
 		currentData.push(value)
@@ -289,7 +319,8 @@ class App extends React.Component {
 		})
 	}
 
-	onFileUpload = (name, blob) => {
+	onFileUpload = (name, blob) => { 
+		console.log('Now setState and show preview option')
 		this.setState({
 			data: {
 				...this.state.data,
@@ -299,10 +330,12 @@ class App extends React.Component {
 	}
 
 	render() {
+		console.log(sampleData)
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
+					<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} />
 				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
-					<div style={{marginTop: '10px'}} className="formHeading">{sampleData.label}</div>
-					{sampleData.registerFields && sampleData.registerFields.map(field => {
+					<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>
+					{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 						switch(field.type) {
 							case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
 							case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
@@ -310,7 +343,7 @@ class App extends React.Component {
 							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
 							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
 							case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
-							case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onFileUpload} />
+							case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
 						}
 					})}
 				</FormGroup>
