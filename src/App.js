@@ -13,7 +13,6 @@ import ListItemText from '@material-ui/core/ListItemText';
 import Select from '@material-ui/core/Select';	
 import Chip from '@material-ui/core/Chip';
 
-
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormGroup from '@material-ui/core/FormGroup';
@@ -21,6 +20,8 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 
 import sampleData from './sampleData'
+
+import FileInput from './components/FileInput/'
 
 export class TextField extends React.PureComponent {
 	validateRegex = (pattern, value) => {
@@ -61,7 +62,7 @@ export class TextField extends React.PureComponent {
 					style={{width: '100%'}}
 					control={
 						<TextInput
-							style={{ width: '100%' }}
+							fullWidth
 							name={name}
 							label={label}
 							type={type}
@@ -205,6 +206,7 @@ export class FormSelect extends React.PureComponent {
 		)
 	}
 }
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -287,6 +289,15 @@ class App extends React.Component {
 		})
 	}
 
+	onFileUpload = (name, blob) => {
+		this.setState({
+			data: {
+				...this.state.data,
+				[name]: blob
+			}
+		})
+	}
+
 	render() {
 		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
 				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
@@ -299,6 +310,7 @@ class App extends React.Component {
 							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
 							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
 							case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
+							case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onFileUpload} />
 						}
 					})}
 				</FormGroup>
