@@ -110,7 +110,7 @@ export class FormRadioGroup extends React.PureComponent {
 	const {name} = fieldData
 	
     return (
-	 <div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
+	 <div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
 			<FormLabel component="legend">{fieldData.label}</FormLabel>
 			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={e => this.handleChange(e, fieldData.name)}>
@@ -151,7 +151,7 @@ export class CheckboxGroup extends React.PureComponent {
 		const {fieldData, errorStates} = this.props
 		const {name} = fieldData
 		return (
-			<div className="root" style={{ paddingTop: '20px', width: '100%', position: 'relative'}}>
+			<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
 					<FormLabel component="legend">{fieldData.label}</FormLabel>
 						{fieldData.payload.map(field => {
@@ -227,10 +227,10 @@ export class FormStepper extends React.PureComponent {
 
 		return (
 			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
-				{formData.map(form => {
+				{formData.map((form, i) => { 
 					return (
-						<Step key={form.name}>
-							<StepLabel error={isError} completed={isComplete} alternativeLabel>{form.label}</StepLabel>
+						<Step key={form.name} error={isError} completed={!isError}>
+							<StepLabel key={form.name} error={isError} completed={isComplete} alternativeLabel>{form.label}</StepLabel>
 						</Step>
 					)
 				})}
@@ -248,12 +248,14 @@ export class MultipleButton extends React.PureComponent {
 	}
 
 	handleBack = () => {
+		this.props.handleBack(this.state.activeStep)
 		this.setState({
 			activeStep: this.state.activeStep - 1,
 		});
 	};
 
 	handleNext = () => {
+		this.props.handleNext(this.state.activeStep)
 		this.setState({
 			activeStep: this.state.activeStep + 1,
 		});
@@ -266,10 +268,10 @@ export class MultipleButton extends React.PureComponent {
 			<MobileStepper 
 				variant="dots"
 				steps={formLength}
-				position="static"
+				position="sticky"
 				activeStep={this.state.activeStep}
 				className="root"
-				style={{flexGrow: '1', maxWidth:"400px", width:'100%'}}
+				style={{flexGrow: '1', width:'100%'}}
 				nextButton={
 					<Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
 						Next
@@ -291,16 +293,19 @@ class App extends React.Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			userData: [],
 			currentCount: 0,
 			data: {},
 			isValid: false,
 			errorStates: {},
+			formsErrorFlag: [],
+			sampleData: sampleData,
 		};
 	}
 
 	validateForm = (fieldname, value) => {
 		var hasError = true;
-		sampleData.registerFields.map(field => {
+		const errorForms = sampleData.registerFields.map(field => {
 			if (field.isRequired) {
 				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false;
 				if (!flag) hasError = false;
@@ -380,30 +385,78 @@ class App extends React.Component {
 		})
 	}
 
+	handleMultiBack = (activeStep) => {
+		this.setState({
+			currentCount: activeStep - 1,
+		})
+	}
+
+	handleMultiNext = (activeStep) => {
+		this.validateCurrentForm(activeStep)
+		let userData = this.state.userData
+		userData[activeStep] = this.state.data
+		this.setState({
+			currentCount: activeStep + 1,
+			userData: userData,
+		})
+	}
+
+	validateRegex = (pattern, value) => {
+		const patt = new RegExp(pattern)
+		const result = patt.test(value)
+		return result
+	}
+
+	validateCurrentForm = (currentForm) => {
+		const formData = this.state.sampleData[currentForm]
+		const userData = this.state.data
+		var isValid = true;
+		formData.registerFields.map(field => {
+			if (field.isRequired) {
+				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false;
+				if (!flag) isValid = false;
+			}
+			if (field.pattern) {
+				const flag = this.validateRegex(field.pattern, this.state.data[field.name]);
+				if (!flag) isValid = false;
+			}
+		});
+		if (isValid) {
+			let formsErrorFlag = this.state.formsErrorFlag
+			formsErrorFlag[currentForm] = false
+			this.setState({formsErrorFlag});
+		} else {
+			let formsErrorFlag = this.state.formsErrorFlag
+			formsErrorFlag[currentForm] = true
+			this.setState({formsErrorFlag});
+		}
+	}
+
 	render() {
-		console.log(sampleData)
+
 		return (
 			<div>
 				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
-					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} />)}
+					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag[this.state.currentCount - 1]} />)}
 					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
 						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
+							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-								case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
-								case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
-								case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
-								case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
+								case 'string': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'number': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'password': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'radioGroup': return <FormRadioGroup key={key} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
+								case 'checkboxGroup': return <CheckboxGroup key={key} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
+								case 'select': return <FormSelect key={key} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
+								case 'file': return <FileInput key={key} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
 							}
 						})}
 					</FormGroup>
 					{sampleData.length === 1 && (<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 						Submit
 					</Button>)}
-					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length}/>)}
+					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>

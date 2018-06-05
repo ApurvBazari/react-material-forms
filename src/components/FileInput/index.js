@@ -39,7 +39,7 @@ class FileInput extends React.PureComponent {
     render() {
         const {classes, fieldData} = this.props
         return (
-            <div>
+            <div style={{marginTop: '20px', paddingTop: '20px'}}>
             <div style={{display: "flex", position: 'relative'}}>
                 <TextInput
                     label={fieldData.label}
