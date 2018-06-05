@@ -39,6 +39,7 @@ class FileInput extends React.PureComponent {
     render() {
         const {classes, fieldData} = this.props
         return (
+            <div>
             <div style={{display: "flex", position: 'relative'}}>
                 <TextInput
                     label={fieldData.label}
@@ -51,9 +52,14 @@ class FileInput extends React.PureComponent {
                     Upload
                     <FileUpload className={classes.rightIcon} />
                 </Button>
-                {this.state.readerResult && (<div className="preview">
-                    <img src={this.state.readerResult} />
-                </div>)}
+            </div>
+            <div style={{marginTop: '10px'}}>
+                {this.state.readerResult && (
+                    <div className="preview" style={{textAlign: 'center'}}>
+                        <img style={{width: '350px'}}src={this.state.readerResult} />
+                    </div>
+                )}
+            </div>
             </div>
         )
     }

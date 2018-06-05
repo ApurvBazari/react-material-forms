@@ -1,28 +1,30 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { Button,
-			TextField as TextInput,
-			Radio,
-			RadioGroup,
-			Checkbox,
-			Input,
-			InputLabel,
-			MenuItem,
-			ListItemText,
-			Select,
-			Chip,
-			Stepper,
-			Step,
-			StepLabel,
-			StepConnector,
-			Typography,
-			FormLabel,
-			FormControl,
-			FormGroup,
-			FormControlLabel,
-			FormHelperText
-		} from '@material-ui/core'
+import { 
+		Button,
+		TextField as TextInput,
+		Radio,
+		RadioGroup,
+		Checkbox,
+		Input,
+		InputLabel,
+		MenuItem,
+		ListItemText,
+		Select,
+		Chip,
+		Stepper,
+		Step,
+		StepLabel,
+		StepConnector,
+		Typography,
+		FormLabel,
+		FormControl,
+		FormGroup,
+		FormControlLabel,
+		FormHelperText,
+		MobileStepper,
+	} from '@material-ui/core'
 
 import sampleData from './sampleData'
 
@@ -224,7 +226,7 @@ export class FormStepper extends React.PureComponent {
 		const {formData, currentStep, isError, isComplete} = this.props
 
 		return (
-			<Stepper style={{width: '100%'}} activeStep={currentStep}>
+			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
 				{formData.map(form => {
 					return (
 						<Step key={form.name}>
@@ -236,6 +238,55 @@ export class FormStepper extends React.PureComponent {
 		)
 	}
 }
+
+export class MultipleButton extends React.PureComponent {
+	constructor(props) {
+		super(props)
+		this.state = {
+			activeStep: 0,
+		}
+	}
+
+	handleBack = () => {
+		this.setState({
+			activeStep: this.state.activeStep - 1,
+		});
+	};
+
+	handleNext = () => {
+		this.setState({
+			activeStep: this.state.activeStep + 1,
+		});
+	};
+
+	render() {
+		const { formLength } = this.props
+
+		return (
+			<MobileStepper 
+				variant="dots"
+				steps={formLength}
+				position="static"
+				activeStep={this.state.activeStep}
+				className="root"
+				style={{flexGrow: '1', maxWidth:"400px", width:'100%'}}
+				nextButton={
+					<Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
+						Next
+						<p><i class="arrow right" /></p>
+					</Button>
+				}
+				backButton= {
+					<Button size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
+						Back
+						<p><i class="arrow left" /></p>
+					</Button>
+				}
+			/>
+		)
+	}
+}
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -331,27 +382,32 @@ class App extends React.Component {
 
 	render() {
 		console.log(sampleData)
-		return <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
-					<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} />
-				<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
-					<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>
-					{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
-						switch(field.type) {
-							case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-							case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-							case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-							case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
-							case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
-							case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
-							case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
-						}
-					})}
-				</FormGroup>
-				<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
-					Submit
-				</Button>
-				{!sampleData.registerFields && <div>Could not load Form from the server!!</div>}
-			</div>;
+		return (
+			<div>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
+					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} />)}
+					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
+						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
+						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
+							switch(field.type) {
+								case 'string': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'number': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'password': return <TextField key={field.name} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+								case 'radioGroup': return <FormRadioGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
+								case 'checkboxGroup': return <CheckboxGroup key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
+								case 'select': return <FormSelect key={field.name} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
+								case 'file': return <FileInput key={field.name} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
+							}
+						})}
+					</FormGroup>
+					{sampleData.length === 1 && (<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
+						Submit
+					</Button>)}
+					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length}/>)}
+					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
+				</div>
+			</div>
+		)
 	}
 }
 
