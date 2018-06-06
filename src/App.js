@@ -2,91 +2,97 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import {
-		Button,
-		TextField as TextInput,
-		Radio,
-		RadioGroup,
-		Checkbox,
-		Input,
-		InputLabel,
-		MenuItem,
-		ListItemText,
-		Select,
-		Chip,
-		Stepper,
-		Step,
-		StepLabel,
-		StepConnector,
-		Typography,
-		FormLabel,
-		FormControl,
-		FormGroup,
-		FormControlLabel,
-		FormHelperText,
-		MobileStepper,
-	} from '@material-ui/core'
+        Button,
+        TextField as TextInput,
+        Radio,
+        RadioGroup,
+        Checkbox,
+        Input,
+        InputLabel,
+        MenuItem,
+        ListItemText,
+        Select,
+        Chip,
+        Stepper,
+        Step,
+        StepLabel,
+        StepConnector,
+        Typography,
+        FormLabel,
+        FormControl,
+        FormGroup,
+        FormControlLabel,
+        FormHelperText,
+        MobileStepper,
+    } from '@material-ui/core'
 
 import sampleData from './sampleData'
 
 import FileInput from './components/FileInput/'
 
 export class TextField extends React.PureComponent {
-	validateRegex = (pattern, value) => {
-		const patt = new RegExp(pattern);
-		const result = patt.test(value);
-		return result;
-	};
+    constructor(props) {
+        super(props);
+        this.state = {
+            inputValue: props.value || ''
+        }
+    }
 
-	validateField = (fieldName, value, pattern, errorText) => {
-		const isValid = this.validateRegex(pattern, value);
-		if(!isValid) {
-			return false
-		}
-		return true
-	};
+    validateRegex = (pattern, value) => {
+        const patt = new RegExp(pattern);
+        const result = patt.test(value)
+        return result;
+    };
 
-	onChange = (e, fieldName, fieldPattern, errorText) => {
-		const value = e.target.value
-		const isValid = this.validateField(fieldName, value, fieldPattern, errorText)
-		if(isValid) {
-			this.props.onBlur(null, value, fieldName)
-		}
-	}
+    validateField = (fieldName, value, pattern, errorText) => {
+        const isValid = this.validateRegex(pattern, value);
+        if(!isValid) {
+            return false
+        }
+        return true
+    };
 
-	onBlur = (e, name, pattern, errorText) => {
-		console.log('Now validate')
-		const value = e.target.value
-		const isValid = this.validateField(name, value, pattern, errorText)
-		isValid ? this.props.onBlur(null, value, name) : this.props.onBlur(errorText, value, name)
-	}
+    onChange = (e, fieldName, fieldPattern, errorText) => {
+        const value = e.target.value
+        const isValid = this.validateField(fieldName, value, fieldPattern, errorText)
+        if(isValid) {
+            this.props.onBlur(null, value, fieldName)
+        }
+    }
 
-	render() {
-		const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
-		const {errorStates} = this.props
-		return (
-			<div style={{ padding: '10px', width: '100%', position: 'relative'}}>
-				<FormControlLabel
-					style={{width: '100%'}}
-					control={
-						<TextInput
-							fullWidth
-							name={name}
-							label={label}
-							type={type}
-							placeholder={placeholder}
-							required={isRequired}
-							error={errorStates[name] ? true : false}
-							onBlur={e =>
-								this.onBlur(e, name, pattern, errorText)
-							}
-							onChange={e => this.onChange(e, name, pattern, errorText)}
-						/>
-					}
-				/>
-				<FormHelperText style={{ color: 'red'}}>
-					{errorStates[name]}
-				</FormHelperText>
-			</div>
+    onBlur = (e, name, pattern, errorText) => {
+        console.log('Now validate')
+        const value = e.target.value
+        const isValid = this.validateField(name, value, pattern, errorText)
+        isValid ? this.props.onBlur(null, value, name) : this.props.onBlur(errorText, value, name)
+    }
+
+    render() {
+        const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
+        const {data, errorStates} = this.props
+        return (
+        <div style={{ padding: '10px', width: '100%', position: 'relative'}}>
+            <FormControlLabel
+                style={{width: '100%'}}
+                control={
+                    <TextInput
+                        value={data ? data[name] : ''}
+                        fullWidth
+                        name={name}
+                        label={label}
+                        type={type}
+                        placeholder={placeholder}
+                        required={isRequired}
+                        error={errorStates[name] ? true : false}
+                        onBlur={e => this.onBlur(e, name, pattern, errorText)}
+                        onChange={e => this.onChange(e, name, pattern, errorText)}
+                    />
+				}
+			/>
+			<FormHelperText style={{ color: 'red'}}>
+				{errorStates[name]}
+			</FormHelperText>
+		</div>
 		)
 	}
 }
@@ -138,30 +144,34 @@ export class CheckboxGroup extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
-			data: []
+			data: props.data || []
 		}
 	}
 
 	handleChange = name => event => {
-		const value = event.target.value
+		const value = event.target.name
 		this.props.onClick(name, value)
 	}
 
 	render() {
 		const {fieldData, errorStates} = this.props
-		const {name} = fieldData
+        const {name} = fieldData
+        const {data} = this.state
 		return (
 			<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
 					<FormLabel component="legend">{fieldData.label}</FormLabel>
 						{fieldData.payload.map(field => {
 							return <FormControlLabel
+                                value={field}
+                                name={field}
 								control ={
 									<Checkbox
-										checked={this.state.data[field]}
+										checked={this.state.data[name]}
 										onChange={this.handleChange(name)}
-										value={field}
-									/>
+										// value={!!data ? data[name] : this.state.value}
+                                        value= {null}
+                                    />
 								}
 								label={field}
 							/>
@@ -177,7 +187,8 @@ export class FormSelect extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
-			value: []
+            initialValue: props.data || null,
+            value: [],
 		}
 	}
 
@@ -190,16 +201,20 @@ export class FormSelect extends React.PureComponent {
 
 	render() {
 		const {fieldData} = this.props
-		const {payload} = fieldData
-
+		const {
+		    payload,
+		    name,
+		    isMultiple
+		} = fieldData
+        const {initialValue} = this.state
 		return (
 			<div>
 				<FormControl component="fieldset" fullWidth>
 					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
 					<Select
-						multiple = {fieldData.isMultiple ? true : false}
-						value={this.state.value}
-						onChange={this.handleChange(fieldData.name)}
+						multiple = {isMultiple ? true : false}
+						value={!!initialValue ? initialValue[name] : this.state.value}
+						onChange={this.handleChange(name)}
 						input={<Input id="select-multiple" />}
 					>
 					{payload.map(value => (
@@ -277,14 +292,15 @@ export class MultipleButton extends React.PureComponent {
 				position="sticky"
 				activeStep={this.state.activeStep}
 				className="root"
+				style={{background: '#e7e7e7'}}
 				nextButton={
-					<Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
+					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
 						Next
 						<p><i class="arrow right" /></p>
 					</Button>
 				}
 				backButton= {
-					<Button size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
+					<Button style={{background: '#e7e7e7'}}size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
 						Back
 						<p><i class="arrow left" /></p>
 					</Button>
@@ -443,18 +459,18 @@ class App extends React.Component {
 			<div>
 				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px', overflow: 'hidden' }}>
 					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
-					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
+					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative', marginBottom: '50px' }}>
 						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-								case 'string': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'number': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'password': return <TextField key={key} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-								case 'radioGroup': return <FormRadioGroup key={key} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange}/>
-								case 'checkboxGroup': return <CheckboxGroup key={key} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />
-								case 'select': return <FormSelect key={key} fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />
-								case 'file': return <FileInput key={key} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />
+                                case 'string': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'number': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'password': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'radioGroup': return <FormRadioGroup key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
+                                case 'checkboxGroup': return <CheckboxGroup key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
+                                case 'select': return <FormSelect key={key} data={this.state.userData[this.state.currentCount]}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
+                                case 'file': return <FileInput key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
 							}
 						})}
 					</FormGroup>
