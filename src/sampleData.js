@@ -9,24 +9,24 @@ const sampleData = [{
             "placeholder": "Enter your first & last name",
             "isRequired": true
         },
-        // {
-        //     "name": "email",
-        //     "type": "string",
-        //     "label": "Email ID",
-        //     "placeholder": "enter your enail ID",
-        //     "isRequired": true,
-        //     "pattern": "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}",
-        //     "errorText": "Invalid Email!"
-        // },
-        // {
-        //     "name": "phone",
-        //     "type": "number",
-        //     "label": "Mobile Number",
-        //     "placeholder": "enter your 10-digit mobile number",
-        //     "isRequired": true,
-        //     "pattern": "[0-9]{10}$",
-        //     "errorText": "Enter 10 digit number"
-        // },
+        {
+            "name": "email",
+            "type": "string",
+            "label": "Email ID",
+            "placeholder": "enter your enail ID",
+            "isRequired": true,
+            "pattern": "[A-Za-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}",
+            "errorText": "Invalid Email!"
+        },
+        {
+            "name": "phone",
+            "type": "number",
+            "label": "Mobile Number",
+            "placeholder": "enter your 10-digit mobile number",
+            "isRequired": true,
+            "pattern": "[0-9]{10}$",
+            "errorText": "Enter 10 digit number"
+        },
         // {
         //     "name": "languages",
         //     "type": "select",
@@ -65,14 +65,14 @@ const sampleData = [{
         //             "disabled": false,
         //         },
         //         {
-        //             "name": "female", 
+        //             "name": "female",
         //             "label":"Female",
-        //             "disabled": false 
+        //             "disabled": false
         //         },
         //         {
         //             "name": "others",
         //             "label":"Others",
-        //             "disabled": true 
+        //             "disabled": true
         //         }
         //     ]
         // },
@@ -157,14 +157,14 @@ const sampleData = [{
                     "disabled": false,
                 },
                 {
-                    "name": "female", 
+                    "name": "female",
                     "label":"Female",
-                    "disabled": false 
+                    "disabled": false
                 },
                 {
                     "name": "others",
                     "label":"Others",
-                    "disabled": true 
+                    "disabled": true
                 }
             ]
         },
@@ -249,14 +249,14 @@ const sampleData = [{
                     "disabled": false,
                 },
                 {
-                    "name": "female", 
+                    "name": "female",
                     "label":"Female",
-                    "disabled": false 
+                    "disabled": false
                 },
                 {
                     "name": "others",
                     "label":"Others",
-                    "disabled": true 
+                    "disabled": true
                 }
             ]
         },

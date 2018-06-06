@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { 
+import {
 		Button,
 		TextField as TextInput,
 		Radio,
@@ -227,10 +227,16 @@ export class FormStepper extends React.PureComponent {
 
 		return (
 			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
-				{formData.map((form, i) => { 
+				{formData.map((form, i) => {
+					let error = ''
+					if(isError[i] === false) {
+						error = false
+					} else if(isError[i] === true){
+						error = true
+					}
 					return (
-						<Step key={form.name} error={isError} completed={!isError}>
-							<StepLabel key={form.name} error={isError} completed={isComplete} alternativeLabel>{form.label}</StepLabel>
+						<Step key={form.name} completed={error.toString() === 'false' ? true : (error.toString() === 'true' ? false : null)}>
+							<StepLabel key={form.name} error={isError[i]} alternativeLabel>{form.label}</StepLabel>
 						</Step>
 					)
 				})}
@@ -265,13 +271,12 @@ export class MultipleButton extends React.PureComponent {
 		const { formLength } = this.props
 
 		return (
-			<MobileStepper 
+			<MobileStepper
 				variant="dots"
 				steps={formLength}
 				position="sticky"
 				activeStep={this.state.activeStep}
 				className="root"
-				style={{flexGrow: '1', width:'100%'}}
 				nextButton={
 					<Button size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
 						Next
@@ -436,8 +441,8 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', border: '1px solid black', paddingLeft: '10px' }}>
-					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag[this.state.currentCount - 1]} />)}
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px' }}>
+					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
 					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
 						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
@@ -453,7 +458,9 @@ class App extends React.Component {
 							}
 						})}
 					</FormGroup>
-					{sampleData.length === 1 && (<Button style={{ position: 'fixed', bottom: '0' }} disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
+				</div>
+				<div style={{position: 'sticky', bottom: '0', width: '100%'}}>
+					{sampleData.length === 1 && (<Button disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
