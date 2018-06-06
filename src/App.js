@@ -380,7 +380,7 @@ class App extends React.Component {
 		})
 	}
 
-	onFileUpload = (name, blob) => { 
+	onFileUpload = (name, blob) => {
 		console.log('Now setState and show preview option')
 		this.setState({
 			data: {
@@ -441,7 +441,7 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px' }}>
+				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px', overflow: 'hidden' }}>
 					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
 					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative' }}>
 						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
@@ -459,7 +459,7 @@ class App extends React.Component {
 						})}
 					</FormGroup>
 				</div>
-				<div style={{position: 'sticky', bottom: '0', width: '100%'}}>
+				<div style={{position: 'fixed', bottom: '0', width: '100%'}}>
 					{sampleData.length === 1 && (<Button disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 						Submit
 					</Button>)}
