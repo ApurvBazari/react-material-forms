@@ -11,7 +11,7 @@ class FileInput extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            file: null,
+            file: props.data ? props.data[props.fieldData.name] : null,
             readerResult: null
         }
     }
@@ -23,14 +23,10 @@ class FileInput extends React.PureComponent {
         const reader = new FileReader()
         reader.onloadend = () => {
             this.setState({
-                file: file,
-                readerResult: reader.result
+                file: reader.result
             },
             () => {
-                const readerResult = this.state.readerResult.split(/\w,+/g)
-                const fileBlob = readerResult[1]
-                console.log(fileBlob)
-                this.props.onChange(name, fileBlob)
+               this.props.onChange(name, reader.result)
             });
         }
         reader.readAsDataURL(file)
@@ -54,9 +50,9 @@ class FileInput extends React.PureComponent {
                 </Button>
             </div>
             <div style={{marginTop: '10px'}}>
-                {this.state.readerResult && (
+                {this.state.file && (
                     <div className="preview" style={{textAlign: 'center'}}>
-                        <img style={{width: '350px'}}src={this.state.readerResult} />
+                        <img style={{width: '350px'}}src={this.state.file} />
                     </div>
                 )}
             </div>

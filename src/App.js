@@ -99,9 +99,11 @@ export class TextField extends React.PureComponent {
 
 export class FormRadioGroup extends React.PureComponent {
 	constructor(props) {
-		super(props)
+        super(props)
+        const {data, fieldData} = this.props
+        const initialvalue = data ? data[fieldData.name] : null
 		this.state = {
-			value: this.props.initialvalue ? this.props.initialvalue : null,
+			value: initialvalue || null,
 		};
 	}
 
@@ -114,7 +116,7 @@ export class FormRadioGroup extends React.PureComponent {
 	render() {
     const { fieldData, errorStates } = this.props;
 	const {name} = fieldData
-	
+    
     return (
 	 <div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
@@ -150,7 +152,15 @@ export class CheckboxGroup extends React.PureComponent {
 
 	handleChange = name => event => {
 		const value = event.target.name
-		this.props.onClick(name, value)
+        this.props.onClick(name, value)
+        const currentData = this.state.data[name] ? this.state.data[name] : []
+        currentData.push(value)
+        this.setState({
+            data: {
+                ...this.state.data,
+                [name]: currentData,
+            }
+        })
 	}
 
 	render() {
@@ -167,10 +177,10 @@ export class CheckboxGroup extends React.PureComponent {
                                 name={field}
 								control ={
 									<Checkbox
-										checked={this.state.data[name]}
+										checked={data[name] ? data[name].indexOf(field) > -1 : false}
 										onChange={this.handleChange(name)}
 										// value={!!data ? data[name] : this.state.value}
-                                        value= {null}
+                                        // value= {null}
                                     />
 								}
 								label={field}
@@ -187,7 +197,7 @@ export class FormSelect extends React.PureComponent {
 	constructor(props) {
 		super(props)
 		this.state = {
-            initialValue: props.data || null,
+            initialValue: props.data || [],
             value: [],
 		}
 	}
@@ -213,7 +223,7 @@ export class FormSelect extends React.PureComponent {
 					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
 					<Select
 						multiple = {isMultiple ? true : false}
-						value={!!initialValue ? initialValue[name] : this.state.value}
+						value={!!initialValue[name] ? initialValue[name] : this.state.value}
 						onChange={this.handleChange(name)}
 						input={<Input id="select-multiple" />}
 					>
