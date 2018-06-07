@@ -342,13 +342,13 @@ class App extends React.Component {
 
 	onCheckboxGroupClick = (name, value) => {
 		// const currentData = this.state.data[name] ? this.state.data[name] : []
-        let currentData = this.state.data[name] ? this.state.data[name] : []
-        currentData.indexOf(value) > -1 ? currentData.splice(currentData.indexOf(value), 1) : currentData.push(value)
+        //let currentData = this.state.data[name] ? this.state.data[name] : []
+        //currentData.indexOf(value) > -1 ? currentData.splice(currentData.indexOf(value), 1) : currentData.push(value)
         // currentData.push(value)
 		this.setState({
 			data:{
 				...this.state.data,
-				[name]: currentData
+				[name]: value
 			}
 		})
 	}

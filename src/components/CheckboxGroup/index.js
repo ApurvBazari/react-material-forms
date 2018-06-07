@@ -25,7 +25,7 @@ export default class CheckboxGroup extends React.PureComponent {
                 [name]: currentData,
             }
         },
-    () => this.props.onClick(name, value))
+    () => this.props.onClick(name, currentData))
 	}
 
 	render() {
