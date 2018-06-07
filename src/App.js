@@ -32,9 +32,10 @@ import FileInput from './components/FileInput/'
 
 export class TextField extends React.PureComponent {
     constructor(props) {
-        super(props);
+        super(props)
+        const { name } = props.fieldData
         this.state = {
-            inputValue: props.value || ''
+            inputValue: props.data ? props.data[name] : ''
         }
     }
 
@@ -58,6 +59,9 @@ export class TextField extends React.PureComponent {
         if(isValid) {
             this.props.onBlur(null, value, fieldName)
         }
+        this.setState({
+            inputValue: value
+        })
     }
 
     onBlur = (e, name, pattern, errorText) => {
@@ -76,7 +80,7 @@ export class TextField extends React.PureComponent {
                 style={{width: '100%'}}
                 control={
                     <TextInput
-                        value={data ? data[name] : ''}
+                        value={this.state.inputValue}
                         fullWidth
                         name={name}
                         label={label}
