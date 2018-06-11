@@ -130,6 +130,7 @@ export class FormRadioGroup extends React.PureComponent {
 			<RadioGroup className="group" aria-label={fieldData.label} name={name} value={this.state.value} onChange={e => this.handleChange(e, name)}>
 				{fieldData.payload.map(field => {
 					return <FormControlLabel
+                                key={field.name}
 								value={field.name}
 								disabled={field.disabled}
 								control={<Radio color="primary" />}
@@ -173,11 +174,12 @@ export class CheckboxGroup extends React.PureComponent {
 		const {fieldData, errorStates, name} = this.props
         const {data} = this.state
 		return (
-			<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
+			<div key={name} className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
 					<FormLabel component="legend">{fieldData.label}</FormLabel>
 						{fieldData.payload.map(field => {
 							return <FormControlLabel
+                                key={field}
                                 value={field}
                                 name={field}
 								control ={
@@ -299,7 +301,6 @@ export class MultipleButton extends React.PureComponent {
 			<MobileStepper
 				variant="dots"
 				steps={formLength}
-				position="sticky"
 				activeStep={this.state.activeStep}
 				className="root"
 				style={{background: '#e7e7e7'}}
@@ -438,10 +439,14 @@ class App extends React.Component {
         },
         () => {
             if(this.state.currentCount === sampleData.length) {
-                console.log(this.state.currentCount, sampleData.length, 'Now call validate then submit button!!')
+                console.log('Now call validate then submit button!!')
             }
         })
-	}
+    }
+    
+    onSubmit = () => {
+        console.log('OnSubmit called. Now format the data and send')
+    }
 
 	validateRegex = (pattern, value) => {
 		const patt = new RegExp(pattern)
@@ -487,7 +492,7 @@ class App extends React.Component {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
                                 case 'string': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'number': return <TextField name={key }key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'number': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
