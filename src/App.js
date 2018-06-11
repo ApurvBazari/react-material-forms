@@ -1,5 +1,4 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
 import {
         Button,
@@ -10,14 +9,10 @@ import {
         Input,
         InputLabel,
         MenuItem,
-        ListItemText,
         Select,
-        Chip,
         Stepper,
         Step,
         StepLabel,
-        StepConnector,
-        Typography,
         FormLabel,
         FormControl,
         FormGroup,
@@ -76,7 +71,7 @@ export class TextField extends React.PureComponent {
 
     render() {
         const { label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
-        const {data, errorStates, name} = this.props
+        const { errorStates, name } = this.props
         return (
         <div style={{ padding: '10px', width: '100%', position: 'relative'}}>
             <FormControlLabel
@@ -107,7 +102,7 @@ export class TextField extends React.PureComponent {
 export class FormRadioGroup extends React.PureComponent {
 	constructor(props) {
         super(props)
-        const {data, fieldData, name} = this.props
+        const { data, name } = this.props
         const initialvalue = data ? data[name] : null
 		this.state = {
 			value: initialvalue || null,
@@ -249,7 +244,7 @@ export class FormStepper extends React.PureComponent {
 	}
 
 	render() {
-		const {formData, currentStep, isError, isComplete} = this.props
+		const { formData, currentStep, isError } = this.props
 
 		return (
 			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
@@ -498,7 +493,8 @@ class App extends React.Component {
                                 case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
                                 case 'file': return <FileInput name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
-							}
+                                default: return null
+                            }
 						})}
 					</FormGroup>
 				</div>)}
