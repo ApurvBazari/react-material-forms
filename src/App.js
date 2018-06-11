@@ -104,8 +104,8 @@ export class TextField extends React.PureComponent {
 export class FormRadioGroup extends React.PureComponent {
 	constructor(props) {
         super(props)
-        const {data, fieldData} = this.props
-        const initialvalue = data ? data[fieldData.name] : null
+        const {data, fieldData, name} = this.props
+        const initialvalue = data ? data[name] : null
 		this.state = {
 			value: initialvalue || null,
 		};
@@ -118,14 +118,13 @@ export class FormRadioGroup extends React.PureComponent {
 	};
 
 	render() {
-    const { fieldData, errorStates } = this.props;
-	const {name} = fieldData
+    const { fieldData, errorStates, name } = this.props
     
     return (
 	 <div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
 			<FormLabel component="legend">{fieldData.label}</FormLabel>
-			<RadioGroup className="group" aria-label={fieldData.label} name={fieldData.name} value={this.state.value} onChange={e => this.handleChange(e, fieldData.name)}>
+			<RadioGroup className="group" aria-label={fieldData.label} name={name} value={this.state.value} onChange={e => this.handleChange(e, name)}>
 				{fieldData.payload.map(field => {
 					return <FormControlLabel
 								value={field.name}
@@ -486,7 +485,7 @@ class App extends React.Component {
                                 case 'string': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'number': return <TextField name={key }key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'radioGroup': return <FormRadioGroup key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
+                                case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
                                 case 'file': return <FileInput key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
