@@ -167,8 +167,8 @@ export class CheckboxGroup extends React.PureComponent {
 	}
 
 	render() {
-		const {fieldData, errorStates} = this.props
-        const {name} = fieldData
+		const {fieldData, errorStates, name} = this.props
+        // const {name} = fieldData
         const {data} = this.state
 		return (
 			<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
@@ -486,7 +486,7 @@ class App extends React.Component {
                                 case 'number': return <TextField name={key }key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
-                                case 'checkboxGroup': return <CheckboxGroup key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
+                                case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
                                 case 'file': return <FileInput key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
 							}
