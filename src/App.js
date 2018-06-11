@@ -275,17 +275,20 @@ export class MultipleButton extends React.PureComponent {
 	}
 
 	handleBack = () => {
-		this.props.handleBack(this.state.activeStep)
 		this.setState({
 			activeStep: this.state.activeStep - 1,
-		});
+        });
+        this.props.handleBack(this.state.activeStep)
 	};
 
 	handleNext = () => {
-		this.props.handleNext(this.state.activeStep)
-		this.setState({
-			activeStep: this.state.activeStep + 1,
-		});
+        const { formLength } = this.props
+        if(this.state.activeStep + 1 < formLength) {
+            this.setState({
+                activeStep: this.state.activeStep + 1,
+            });
+        }
+        this.props.handleNext()
 	};
 
 	render() {
