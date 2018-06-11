@@ -355,9 +355,23 @@ class App extends React.Component {
 	};
 
 	handleSubmit = () => {
-		const isValid = this.validate(this.state.data);
-		if (isValid) this.props.onSubmit(this.state.data);
-		else alert('Fill the Form Correctly');
+        let isValid = true
+        if(sampleData.length > 1) {
+            this.state.formsErrorFlag.map(flag => {
+                if(flag) {
+                    isValid = false
+                }
+            })
+        } else {
+            isValid = this.validate(this.state.data);
+        }
+        if (isValid) this.props.onSubmit(this.state.data);
+		else {
+            console.log('Fill the Form Correctly');
+            this.setState({
+                currentCount: this.state.currentCount - 1,
+            })
+        }
 	};
 
 	onTextBlur = (errorText, fieldValue, fieldName) => {
@@ -434,13 +448,9 @@ class App extends React.Component {
         },
         () => {
             if(this.state.currentCount === sampleData.length) {
-                console.log('Now call validate then submit button!!')
+                this.handleSubmit()
             }
         })
-    }
-    
-    onSubmit = () => {
-        console.log('OnSubmit called. Now format the data and send')
     }
 
 	validateRegex = (pattern, value) => {
