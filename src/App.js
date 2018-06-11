@@ -290,6 +290,7 @@ export class MultipleButton extends React.PureComponent {
 
 	render() {
 		const { formLength } = this.props
+        const { activeStep } = this.state
 
 		return (
 			<MobileStepper
@@ -301,7 +302,7 @@ export class MultipleButton extends React.PureComponent {
 				style={{background: '#e7e7e7'}}
 				nextButton={
 					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
-						Next
+						{formLength === activeStep + 1 ? 'Submit' :  'Next'}
 						<p><i class="arrow right" /></p>
 					</Button>
 				}
@@ -431,7 +432,12 @@ class App extends React.Component {
 			currentCount: currentCount + 1,
             userData: userData,
             data: userData[currentCount + 1]
-		})
+        },
+        () => {
+            if(this.state.currentCount === sampleData.length) {
+                console.log(this.state.currentCount, sampleData.length, 'Now call validate then submit button!!')
+            }
+        })
 	}
 
 	validateRegex = (pattern, value) => {
@@ -470,7 +476,7 @@ class App extends React.Component {
 
 		return (
 			<div>
-				<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px', overflow: 'hidden' }}>
+				{sampleData.length > this.state.currentCount && (<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px', overflow: 'hidden' }}>
 					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
 					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative', marginBottom: '50px' }}>
 						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
@@ -487,7 +493,7 @@ class App extends React.Component {
 							}
 						})}
 					</FormGroup>
-				</div>
+				</div>)}
 				<div style={{position: 'fixed', bottom: '0', width: '100%'}}>
 					{sampleData.length === 1 && (<Button disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 						Submit
