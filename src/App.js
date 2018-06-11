@@ -168,7 +168,6 @@ export class CheckboxGroup extends React.PureComponent {
 
 	render() {
 		const {fieldData, errorStates, name} = this.props
-        // const {name} = fieldData
         const {data} = this.state
 		return (
 			<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
@@ -182,8 +181,6 @@ export class CheckboxGroup extends React.PureComponent {
 									<Checkbox
 										checked={data[name] ? data[name].indexOf(field) > -1 : false}
 										onChange={this.handleChange(name)}
-										// value={!!data ? data[name] : this.state.value}
-                                        // value= {null}
                                     />
 								}
 								label={field}
@@ -206,18 +203,14 @@ export class FormSelect extends React.PureComponent {
 	}
 
 	handleChange = name => e => {
-		const value = e.target.value
+        let value = e.target.value
 		this.setState({value})
 		this.props.onClick(name, value)
 	}
 
 	render() {
-		const {fieldData} = this.props
-		const {
-		    payload,
-		    name,
-		    isMultiple
-		} = fieldData
+		const {fieldData, name} = this.props
+		const { payload, isMultiple } = fieldData
         const {initialValue} = this.state
 		return (
 			<div>
@@ -225,7 +218,8 @@ export class FormSelect extends React.PureComponent {
 					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
 					<Select
 						multiple = {isMultiple ? true : false}
-						value={!!initialValue[name] ? initialValue[name] : this.state.value}
+						value = {!!initialValue[name] ? (this.state.value.length > 0 ? this.state.value : initialValue[name]) : this.state.value
+						}
 						onChange={this.handleChange(name)}
 						input={<Input id="select-multiple" />}
 					>
@@ -487,7 +481,7 @@ class App extends React.Component {
                                 case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
                                 case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
-                                case 'select': return <FormSelect key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
+                                case 'select': return <FormSelect name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
                                 case 'file': return <FileInput key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
 							}
 						})}
