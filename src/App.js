@@ -33,7 +33,7 @@ import FileInput from './components/FileInput/'
 export class TextField extends React.PureComponent {
     constructor(props) {
         super(props)
-        const { name } = props.fieldData
+        const {name} = props
         this.state = {
             inputValue: props.data ? props.data[name] : ''
         }
@@ -72,8 +72,8 @@ export class TextField extends React.PureComponent {
     }
 
     render() {
-        const { name, label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
-        const {data, errorStates} = this.props
+        const { label, type, placeholder, isRequired, pattern, errorText } = this.props.fieldData
+        const {data, errorStates, name} = this.props
         return (
         <div style={{ padding: '10px', width: '100%', position: 'relative'}}>
             <FormControlLabel
@@ -417,23 +417,27 @@ class App extends React.Component {
 		})
 	}
 
-	handleMultiBack = (activeStep) => {
-        this.validateCurrentForm(activeStep)
+	handleMultiBack = () => {
+        const {currentCount} = this.state
+        this.validateCurrentForm(currentCount)
         let userData = this.state.userData
-        userData[activeStep] = this.state.data
+        userData[currentCount] = this.state.data
         this.setState({
-            currentCount: activeStep - 1,
+            currentCount: currentCount - 1,
             userData: userData,
+            data: userData[currentCount - 1],
 		})
 	}
 
-	handleMultiNext = (activeStep) => {
-		this.validateCurrentForm(activeStep)
+	handleMultiNext = () => {
+        const {currentCount} = this.state
+		this.validateCurrentForm(currentCount)
 		let userData = this.state.userData
-		userData[activeStep] = this.state.data
+		userData[currentCount] = this.state.data
 		this.setState({
-			currentCount: activeStep + 1,
-			userData: userData,
+			currentCount: currentCount + 1,
+            userData: userData,
+            data: userData[currentCount + 1]
 		})
 	}
 
@@ -445,15 +449,15 @@ class App extends React.Component {
 
 	validateCurrentForm = (currentForm) => {
 		const formData = this.state.sampleData[currentForm]
-		const userData = this.state.data
 		var isValid = true;
 		formData.registerFields.map(field => {
+            const {data} = this.state
 			if (field.isRequired) {
-				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false;
+				const flag = data ? (data[field.name] === '' ? false : true) : false;
 				if (!flag) isValid = false;
 			}
 			if (field.pattern) {
-				const flag = this.validateRegex(field.pattern, this.state.data[field.name]);
+				const flag = data ? this.validateRegex(field.pattern, data[field.name]) : false;
 				if (!flag) isValid = false;
 			}
 		});
@@ -479,13 +483,13 @@ class App extends React.Component {
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-                                case 'string': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'number': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'password': return <TextField key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'radioGroup': return <FormRadioGroup key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
-                                case 'checkboxGroup': return <CheckboxGroup key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
-                                case 'select': return <FormSelect key={key} data={this.state.userData[this.state.currentCount]}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
-                                case 'file': return <FileInput key={key} data={this.state.userData[this.state.currentCount]} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
+                                case 'string': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'number': return <TextField name={key }key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'radioGroup': return <FormRadioGroup key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
+                                case 'checkboxGroup': return <CheckboxGroup key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
+                                case 'select': return <FormSelect key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
+                                case 'file': return <FileInput key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
 							}
 						})}
 					</FormGroup>

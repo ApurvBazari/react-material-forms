@@ -37,7 +37,7 @@ const sampleData = [{
             "payload": ["English", "Urdu", "Hindi", "Bengali", "Marathi", "Hebrew"]
         },
         {
-            "name": "interests",
+            "name": "interests1",
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
@@ -138,7 +138,7 @@ const sampleData = [{
             "payload": ["English", "Urdu", "Hindi", "Bengali", "Marathi", "Hebrew"]
         },
         {
-            "name": "interests",
+            "name": "interests2",
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
@@ -230,7 +230,7 @@ const sampleData = [{
             "payload": ["English", "Urdu", "Hindi", "Bengali", "Marathi", "Hebrew"]
         },
         {
-            "name": "interests",
+            "name": "interests3",
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
