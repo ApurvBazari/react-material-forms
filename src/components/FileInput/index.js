@@ -11,7 +11,7 @@ class FileInput extends React.PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            file: props.data ? props.data[props.fieldData.name] : null,
+            file: props.data ? props.data[props.name] : null,
             readerResult: null
         }
     }
@@ -33,7 +33,7 @@ class FileInput extends React.PureComponent {
     }
 
     render() {
-        const {classes, fieldData} = this.props
+        const {classes, fieldData, name} = this.props
         return (
             <div style={{marginTop: '20px', paddingTop: '20px'}}>
             <div style={{display: "flex", position: 'relative'}}>
@@ -43,7 +43,7 @@ class FileInput extends React.PureComponent {
                     helperText={fieldData.helperText}
                     fullWidth
                 />
-                <input type="file" style={{position: 'absolute', right: '0px', width: '100px', zIndex: '2', top: "15px", "height":"50px", "opacity": "0"}} accept="images/*" onChange={this.onClick(fieldData.name)} />
+                <input type="file" style={{position: 'absolute', right: '0px', width: '100px', zIndex: '2', top: "15px", "height":"50px", "opacity": "0"}} accept="images/*" onChange={this.onClick(name)} />
                 <Button type="file" className={classes.button} variant="raised" color="default">
                     Upload
                     <FileUpload className={classes.rightIcon} />

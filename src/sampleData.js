@@ -44,15 +44,15 @@ const sampleData = [{
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
-        // {
-        //     "name": "photo",
-        //     "type": "file",
-        //     "label": "Upload your photo",
-        //     "placeholder": "Only upload png :P. Kidding ;)",
-        //     "helperText": "Will send the file data back as blob",
-        //     "required": true,
-        //     "errorText": "Upload the correct format!!",
-        // },
+        {
+            "name": "photo",
+            "type": "file",
+            "label": "Upload your photo",
+            "placeholder": "Only upload png :P. Kidding ;)",
+            "helperText": "Will send the file data back as blob",
+            "required": true,
+            "errorText": "Upload the correct format!!",
+        },
         {
             "name": "gender",
             "type": "radioGroup",

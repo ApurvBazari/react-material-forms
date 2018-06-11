@@ -482,7 +482,7 @@ class App extends React.Component {
                                 case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
-                                case 'file': return <FileInput key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
+                                case 'file': return <FileInput name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
 							}
 						})}
 					</FormGroup>
