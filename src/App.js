@@ -26,6 +26,9 @@ import {
         MobileStepper,
     } from '@material-ui/core'
 
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+
 import sampleData from './sampleData'
 
 import FileInput from './components/FileInput/'
@@ -301,15 +304,15 @@ export class MultipleButton extends React.PureComponent {
 				className="root"
 				style={{background: '#e7e7e7'}}
 				nextButton={
-					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext} disabled={this.state.activeStep === formLength}>
+					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext}>
 						{formLength === activeStep + 1 ? 'Submit' :  'Next'}
-						<p><i class="arrow right" /></p>
+                        {formLength > activeStep + 1 && (<KeyboardArrowRight />)}
 					</Button>
 				}
 				backButton= {
-					<Button style={{background: '#e7e7e7'}}size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
+					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
+                        <KeyboardArrowLeft />
 						Back
-						<p><i class="arrow left" /></p>
 					</Button>
 				}
 			/>
