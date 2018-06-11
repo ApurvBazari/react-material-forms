@@ -445,12 +445,13 @@ class App extends React.Component {
 		var isValid = true;
 		formData.registerFields.map(field => {
             const {data} = this.state
+            const name = `${field.name}-${currentForm}`
 			if (field.isRequired) {
-				const flag = data ? (data[field.name] === '' ? false : true) : false;
+				const flag = data ? (data[name] === '' ? false : true) : false;
 				if (!flag) isValid = false;
 			}
 			if (field.pattern) {
-				const flag = data ? this.validateRegex(field.pattern, data[field.name]) : false;
+				const flag = data ? this.validateRegex(field.pattern, data[name]) : false;
 				if (!flag) isValid = false;
 			}
 		});
