@@ -368,14 +368,31 @@ class App extends React.Component {
         } else {
             isValid = this.validate(this.state.data);
         }
-        if (isValid) this.props.onSubmit(this.state.data);
+        if (isValid) this.onSubmit(this.state.userData);
 		else {
+            this.onSubmit(this.state.userData)
             console.log('Fill the Form Correctly');
             this.setState({
                 currentCount: this.state.currentCount - 1,
             })
         }
 	};
+
+    onSubmit = (data) => {
+        console.log(data)
+        const completeFormData = data.map(form => {
+            const keys = Object.keys(form)
+            let formData = []
+            keys.forEach(key => {
+                console.log(key)
+                const formKey = key.split('-')[0]
+                formData[formKey] = form[key]
+            })
+            return formData    
+        })
+        this.props.onSubmit(completeFormData)
+        console.log(completeFormData)
+    }
 
 	onTextBlur = (errorText, fieldValue, fieldName) => {
 		this.setState({
