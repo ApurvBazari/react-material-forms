@@ -48,7 +48,7 @@ const sampleData = [{
             "name": "photo",
             "type": "file",
             "label": "Upload your photo",
-            "placeholder": "Only upload png :P. Kidding ;)",
+            "placeholder": "Only supports images now!",
             "helperText": "Will send the file data back as blob",
             "required": true,
             "errorText": "Upload the correct format!!",
