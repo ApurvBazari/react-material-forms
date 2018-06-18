@@ -24,7 +24,8 @@ import {
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
-import sampleData from './sampleData'
+// import sampleData from './sampleData'
+import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
