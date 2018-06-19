@@ -367,11 +367,11 @@ class App extends React.Component {
                 }
             })
         } else {
-            isValid = this.validate(this.state.data);
+            isValid = this.validateCurrentForm(this.state.currentCount);
         }
-        if (isValid) this.onSubmit(this.state.userData);
+        if (isValid) this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
 		else {
-            this.onSubmit(this.state.userData)
+			//  this.onSubmit(this.state.userData)
             console.log('Fill the Form Correctly');
             this.setState({
                 currentCount: this.state.currentCount - 1,
@@ -380,20 +380,32 @@ class App extends React.Component {
 	};
 
     onSubmit = (data) => {
-        console.log(data)
-        const completeFormData = data.map(form => {
-            const keys = Object.keys(form)
-            let formData = []
-            keys.forEach(key => {
-                console.log(key)
-                const formKey = key.split('-')[0]
-                formData[formKey] = form[key]
-            })
-            return formData    
-        })
-        this.props.onSubmit(completeFormData)
-        console.log(completeFormData)
-    }
+		console.log(data)
+		if(!data.length) {
+			const keys = Object.keys(data)
+			let formData = []
+			keys.forEach(key => {
+				console.log(key)
+				const formKey = key.split('-')[0]
+				formData[formKey] = data[key]
+			})
+			console.log(formData)
+			this.props.onSubmit(formData)
+		} else {
+			const completeFormData = data.map(form => {
+				const keys = Object.keys(form)
+				let formData = []
+				keys.forEach(key => {
+					console.log(key)
+					const formKey = key.split('-')[0]
+					formData[formKey] = form[key]
+				})
+				return formData
+			})
+			this.props.onSubmit(completeFormData)
+			console.log(completeFormData)
+		}
+	}
 
 	onTextBlur = (errorText, fieldValue, fieldName) => {
 		this.setState({
@@ -504,6 +516,7 @@ class App extends React.Component {
 			formsErrorFlag[currentForm] = true
 			this.setState({formsErrorFlag});
 		}
+		return isValid
 	}
 
 	render() {
@@ -511,9 +524,9 @@ class App extends React.Component {
 		return (
 			<div>
 				{sampleData.length > this.state.currentCount && (<div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', paddingLeft: '10px', overflow: 'hidden' }}>
-					{sampleData.length > 0 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
+					{sampleData.length > 1 && (<FormStepper formData={sampleData} key="multiFormStepper" currentStep={this.state.currentCount} isError={this.state.formsErrorFlag} />)}
 					<FormGroup style={{ padding: '5px', width: '100%', position: 'relative', marginBottom: '50px' }}>
-						{sampleData.length === 0 && (<div style={{marginTop: '10px'}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
+						{sampleData.length === 1 && (<div style={{backgroundColor: '#e7e7e7', padding:15, color: '#333', marginLeft: -10, paddingLeft: 5, fontSize: 20}} className="formHeading">{sampleData[this.state.currentCount].label}</div>)}
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
@@ -530,7 +543,7 @@ class App extends React.Component {
 					</FormGroup>
 				</div>)}
 				<div style={{position: 'fixed', bottom: '0', width: '100%'}}>
-					{sampleData.length === 1 && (<Button disabled={!this.state.isValid} variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
+					{sampleData.length === 1 && (<Button variant="raised" color="primary" onClick={this.handleSubmit} fullWidth>
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
