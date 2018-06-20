@@ -336,7 +336,7 @@ class App extends React.Component {
 
 	validateForm = (fieldname, value) => {
 		var hasError = true;
-		const errorForms = sampleData.registerFields.map(field => {
+		sampleData.registerFields.forEach(field => {
 			if (field.isRequired) {
 				const flag = this.state.data[field.name] ? (this.state.data[field.name] === '' ? false : true) : false;
 				if (!flag) hasError = false;
@@ -361,7 +361,7 @@ class App extends React.Component {
 	handleSubmit = () => {
         let isValid = true
         if(sampleData.length > 1) {
-            this.state.formsErrorFlag.map(flag => {
+            this.state.formsErrorFlag.forEach(flag => {
                 if(flag) {
                     isValid = false
                 }
@@ -497,7 +497,7 @@ class App extends React.Component {
 		const formData = this.state.sampleData[currentForm]
 		let isValid = true
 		let errors = this.state.errorStates
-		formData.registerFields.map(field => {
+		formData.registerFields.forEach(field => {
             const {data} = this.state
             const name = `${field.name}-${currentForm}`
 			if (field.isRequired) {

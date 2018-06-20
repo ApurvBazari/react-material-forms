@@ -1,5 +1,4 @@
 import React from 'react'
-import Delete from '@material-ui/icons/Delete';
 import FileUpload from '@material-ui/icons/FileUpload';
 import Button from '@material-ui/core/Button';
 import TextInput from '@material-ui/core/TextField';
@@ -18,16 +17,11 @@ class FileInput extends React.PureComponent {
 
     onClick = name => e => {
         const file = e.target.files[0]
-        const type = e.target.type
-        const fileUrl = e.target.value
         const reader = new FileReader()
         reader.onloadend = () => {
             this.setState({
                 file: reader.result
-            },
-            () => {
-               this.props.onChange(name, reader.result)
-            });
+            }, () => {this.props.onChange(name, reader.result)});
         }
         reader.readAsDataURL(file)
     }
@@ -52,7 +46,7 @@ class FileInput extends React.PureComponent {
             <div style={{marginTop: '10px'}}>
                 {this.state.file && (
                     <div className="preview" style={{textAlign: 'center'}}>
-                        <img style={{width: '350px'}}src={this.state.file} />
+                        <img style={{width: '350px'}}src={this.state.file} alt="Unable to load preview!! Check the file type Uploaded." />
                     </div>
                 )}
             </div>
