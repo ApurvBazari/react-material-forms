@@ -370,14 +370,6 @@ class App extends React.Component {
             isValid = this.validateCurrentForm(this.state.currentCount);
         }
         if (isValid) this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
-		else {
-			//  this.onSubmit(this.state.userData)
-			console.log('Fill the Form Correctly');
-			// React.findDOMNode().focus()
-            // this.setState({
-            //     currentCount: this.state.currentCount - 1,
-            // })
-        }
 	};
 
     onSubmit = (data) => {
