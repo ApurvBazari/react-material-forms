@@ -494,19 +494,28 @@ class App extends React.Component {
 
 	validateCurrentForm = (currentForm) => {
 		const formData = this.state.sampleData[currentForm]
-		var isValid = true;
+		let isValid = true
+		let errors = this.state.errorStates
 		formData.registerFields.map(field => {
             const {data} = this.state
             const name = `${field.name}-${currentForm}`
 			if (field.isRequired) {
-				const flag = data ? (data[name] === '' ? false : true) : false;
-				if (!flag) isValid = false;
+				const flag = data ? ((data[name] === '' || !data[name]) ? false : true) : false;
+				if (!flag) {
+					isValid = false;
+					errors = {
+						...errors,
+						[name]: 'Input is Required'
+					}
+				}
 			}
 			if (field.pattern) {
 				const flag = data ? this.validateRegex(field.pattern, data[name]) : false;
-				if (!flag) isValid = false;
+				if (!flag)
+					isValid = false;
 			}
 		});
+
 		if (isValid) {
 			let formsErrorFlag = this.state.formsErrorFlag
 			formsErrorFlag[currentForm] = false
@@ -514,7 +523,10 @@ class App extends React.Component {
 		} else {
 			let formsErrorFlag = this.state.formsErrorFlag
 			formsErrorFlag[currentForm] = true
-			this.setState({formsErrorFlag});
+			this.setState({
+				formsErrorFlag,
+				errorStates: errors,
+			});
 		}
 		return isValid
 	}
