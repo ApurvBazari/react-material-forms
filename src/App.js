@@ -24,8 +24,8 @@ import {
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
-// import sampleData from './sampleData'
-import sampleData from './singleFormData'
+import sampleData from './sampleData'
+//import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
@@ -370,6 +370,13 @@ class App extends React.Component {
             isValid = this.validateCurrentForm(this.state.currentCount);
         }
         if (isValid) this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
+		else {
+			if(this.state.sampleData.length > 1) {
+            	this.setState({
+                	currentCount: this.state.currentCount - 1,
+				})
+			}
+        }
 	};
 
     onSubmit = (data) => {
