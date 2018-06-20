@@ -76,15 +76,15 @@ const sampleData = [{
         //         }
         //     ]
         // },
-        // {
-        //     "name": "password",
-        //     "type": "password",
-        //     "label": "Password",
-        //     "placeholder": "set your password",
-        //     "pattern": "[0-9a-zA-Z]{6,}",
-        //     "isRequired": true,
-        //     "errorText": "Minimum of 6 charecters is required"
-        // },
+        {
+            "name": "password",
+            "type": "password",
+            "label": "Password",
+            "placeholder": "set your password",
+            "pattern": "[0-9a-zA-Z]{6,}",
+            "isRequired": true,
+            "errorText": "Minimum of 6 charecters is required"
+        },
         // {
         //     "name": "passwordCheck",
         //     "type": "password",

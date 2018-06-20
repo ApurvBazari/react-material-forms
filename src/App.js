@@ -372,10 +372,11 @@ class App extends React.Component {
         if (isValid) this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
 		else {
 			//  this.onSubmit(this.state.userData)
-            console.log('Fill the Form Correctly');
-            this.setState({
-                currentCount: this.state.currentCount - 1,
-            })
+			console.log('Fill the Form Correctly');
+			// React.findDOMNode().focus()
+            // this.setState({
+            //     currentCount: this.state.currentCount - 1,
+            // })
         }
 	};
 
@@ -542,13 +543,13 @@ class App extends React.Component {
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-                                case 'string': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'number': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'password': return <TextField name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'radioGroup': return <FormRadioGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
-                                case 'checkboxGroup': return <CheckboxGroup name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
-                                case 'select': return <FormSelect name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
-                                case 'file': return <FileInput name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
+                                case 'string': return <TextField autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'number': return <TextField autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'password': return <TextField autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
+                                case 'radioGroup': return <FormRadioGroup autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
+                                case 'checkboxGroup': return <CheckboxGroup autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
+                                case 'select': return <FormSelect autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
+                                case 'file': return <FileInput autoFocus={this.state.errorStates[key]} ref={key} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
                                 default: return null
                             }
 						})}
