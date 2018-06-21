@@ -373,7 +373,8 @@ class App extends React.Component {
 		else {
 			if(this.state.sampleData.length > 1) {
             	this.setState({
-                	currentCount: this.state.currentCount - 1,
+					currentCount: this.state.currentCount - 1,
+					data: this.state.userData[this.state.currentCount -1],
 				})
 			}
         }

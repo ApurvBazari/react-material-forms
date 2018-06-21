@@ -1,5 +1,5 @@
 const sampleData = [{
-    "label": "Sample Form",
+    "label": "Personal Details",
     "name": "form1",
     "registerFields": [
         {
@@ -100,7 +100,7 @@ const sampleData = [{
         }
     ]},
     {
-    "label": "Sample Form 2",
+    "label": "Event Details",
     "name": "form2",
     "registerFields": [
         {
@@ -192,7 +192,7 @@ const sampleData = [{
         }
     ]},
     {
-    "label": "Sample Form 3",
+    "label": "Partner Details",
     "name": "form3",
     "registerFields": [
         {
