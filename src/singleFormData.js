@@ -41,7 +41,7 @@ const sampleData = [{
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "isRequired": true,
-            "fieldType": "checkbox",
+            "fieldType": "switch",
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
