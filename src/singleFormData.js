@@ -1,6 +1,7 @@
 const sampleData = [{
     "label": "Sample Form",
     "name": "form1",
+    "errorType": "snackbar",
     "registerFields": [
         {
             "name": "name",
