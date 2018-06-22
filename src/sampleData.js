@@ -41,6 +41,7 @@ const sampleData = [{
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
+            "fieldType": "switch",
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
@@ -142,6 +143,7 @@ const sampleData = [{
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
+            "fieldType": "switch",
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
@@ -234,6 +236,7 @@ const sampleData = [{
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "required": true,
+            "fieldType": "checkbox",
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },

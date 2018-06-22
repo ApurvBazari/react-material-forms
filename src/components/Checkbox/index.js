@@ -1,5 +1,10 @@
 import React from 'react'
-import { Checkbox, FormControlLabel, FormLabel, FormControl, FormHelperText } from '@material-ui/core'
+import { Switch, Checkbox, FormControlLabel, FormLabel, FormControl, FormHelperText } from '@material-ui/core'
+
+const componentsMap = {
+	checkbox: Checkbox,
+	switch: Switch,
+}
 
 export default class CheckboxGroup extends React.PureComponent {
 	constructor(props) {
@@ -24,7 +29,9 @@ export default class CheckboxGroup extends React.PureComponent {
 
 	render() {
 		const {fieldData, errorStates, name} = this.props
-        const {data} = this.state
+		const {data} = this.state
+		const FieldContainer = componentsMap[fieldData.fieldType]
+
 		return (
 			<div key={name} className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
@@ -35,7 +42,7 @@ export default class CheckboxGroup extends React.PureComponent {
                                 value={field}
                                 name={field}
 								control ={
-									<Checkbox
+									<FieldContainer
 										checked={data[name] ? data[name].indexOf(field) > -1 : false}
 										onChange={this.handleChange(name)}
                                     />
