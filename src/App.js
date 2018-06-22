@@ -4,6 +4,7 @@ import CheckboxGroup from './components/Checkbox'
 import MultipleButton from './components/MultipleButton'
 import FormRadioGroup from './components/RadioGroup'
 import FormSelect from './components/Select'
+import FormStepper from './components/Stepper'
 
 import {
         Button,
@@ -26,8 +27,8 @@ import {
         MobileStepper,
     } from '@material-ui/core'
 
-// import sampleData from './sampleData'
-import sampleData from './singleFormData'
+import sampleData from './sampleData'
+// import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
@@ -238,36 +239,36 @@ export class TextField extends React.PureComponent {
 // 	}
 // }
 
-export class FormStepper extends React.PureComponent {
-	constructor(props) {
-		super(props)
-		this.state = {
-			currentStep: 0,
-		}
-	}
+// export class FormStepper extends React.PureComponent {
+// 	constructor(props) {
+// 		super(props)
+// 		this.state = {
+// 			currentStep: 0,
+// 		}
+// 	}
 
-	render() {
-		const { formData, currentStep, isError } = this.props
+// 	render() {
+// 		const { formData, currentStep, isError } = this.props
 
-		return (
-			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
-				{formData.map((form, i) => {
-					let error = ''
-					if(isError[i] === false) {
-						error = false
-					} else if(isError[i] === true){
-						error = true
-					}
-					return (
-						<Step key={form.name} completed={error.toString() === 'false' ? true : (error.toString() === 'true' ? false : null)}>
-							<StepLabel key={form.name} error={isError[i]} alternativeLabel>{form.label}</StepLabel>
-						</Step>
-					)
-				})}
-			</Stepper>
-		)
-	}
-}
+// 		return (
+// 			<Stepper style={{width: '100%', marginRight: '10px'}} activeStep={currentStep} alternativeLabel nonLinear>
+// 				{formData.map((form, i) => {
+// 					let error = ''
+// 					if(isError[i] === false) {
+// 						error = false
+// 					} else if(isError[i] === true){
+// 						error = true
+// 					}
+// 					return (
+// 						<Step key={form.name} completed={error.toString() === 'false' ? true : (error.toString() === 'true' ? false : null)}>
+// 							<StepLabel key={form.name} error={isError[i]} alternativeLabel>{form.label}</StepLabel>
+// 						</Step>
+// 					)
+// 				})}
+// 			</Stepper>
+// 		)
+// 	}
+// }
 
 // export class MultipleButton extends React.PureComponent {
 // 	constructor(props) {
