@@ -2,6 +2,8 @@ import React from 'react';
 
 import CheckboxGroup from './components/Checkbox'
 import MultipleButton from './components/MultipleButton'
+import FormRadioGroup from './components/RadioGroup'
+
 import {
         Button,
         TextField as TextInput,
@@ -23,11 +25,8 @@ import {
         MobileStepper,
     } from '@material-ui/core'
 
-import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
-import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
-
-import sampleData from './sampleData'
-// import sampleData from './singleFormData'
+// import sampleData from './sampleData'
+import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
@@ -102,50 +101,50 @@ export class TextField extends React.PureComponent {
 	}
 }
 
-export class FormRadioGroup extends React.PureComponent {
-	constructor(props) {
-        super(props)
-        const { data, name } = this.props
-        const initialvalue = data ? data[name] : null
-		this.state = {
-			value: initialvalue || null,
-		};
-	}
+// export class FormRadioGroup extends React.PureComponent {
+// 	constructor(props) {
+//         super(props)
+//         const { data, name } = this.props
+//         const initialvalue = data ? data[name] : null
+// 		this.state = {
+// 			value: initialvalue || null,
+// 		};
+// 	}
 
-	handleChange = (event, name) => {
-		const value = event.target.value
-		this.setState({value});
-		this.props.onChange(name, value)
-	};
+// 	handleChange = (event, name) => {
+// 		const value = event.target.value
+// 		this.setState({value});
+// 		this.props.onChange(name, value)
+// 	};
 
-	render() {
-    const { fieldData, errorStates, name } = this.props
+// 	render() {
+//     const { fieldData, errorStates, name } = this.props
     
-    return (
-	 <div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
-		<FormControl component="fieldset" required={fieldData.required} className="formControl">
-			<FormLabel component="legend">{fieldData.label}</FormLabel>
-			<RadioGroup className="group" aria-label={fieldData.label} name={name} value={this.state.value} onChange={e => this.handleChange(e, name)}>
-				{fieldData.payload.map(field => {
-					return <FormControlLabel
-                                key={field.name}
-								value={field.name}
-								disabled={field.disabled}
-								control={<Radio color="primary" />}
-								label={field.label}
-							/>
-				})}
-			</RadioGroup>
-		</FormControl>
-		{errorStates[name] && (
-			<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
-				{errorStates[name]}
-			</FormHelperText>
-		)}
-	 </div>
-    );
-	}
-}
+//     return (
+// 	 <div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
+// 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
+// 			<FormLabel component="legend">{fieldData.label}</FormLabel>
+// 			<RadioGroup className="group" aria-label={fieldData.label} name={name} value={this.state.value} onChange={e => this.handleChange(e, name)}>
+// 				{fieldData.payload.map(field => {
+// 					return <FormControlLabel
+//                                 key={field.name}
+// 								value={field.name}
+// 								disabled={field.disabled}
+// 								control={<Radio color="primary" />}
+// 								label={field.label}
+// 							/>
+// 				})}
+// 			</RadioGroup>
+// 		</FormControl>
+// 		{errorStates[name] && (
+// 			<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+// 				{errorStates[name]}
+// 			</FormHelperText>
+// 		)}
+// 	 </div>
+//     );
+// 	}
+// }
 
 // export class CheckboxGroup extends React.PureComponent {
 // 	constructor(props) {

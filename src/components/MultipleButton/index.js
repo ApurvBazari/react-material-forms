@@ -1,8 +1,8 @@
 import React from 'react'
 import { MobileStepper, Button} from '@material-ui/core'
 
-import { KeyboardArrowLeft, KeyboardArrowRight} from '@material-ui/icons'
-// import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
+import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
+import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
 export default class MultipleButton extends React.PureComponent {
 	constructor(props) {
