@@ -15,7 +15,7 @@ import { Button, FormGroup } from '@material-ui/core'
 //import sampleData from './sampleData'
 import sampleData from './singleFormData'
 
-const errorComponentsMap = {
+const popupComponentsMap = {
 	snackbar: Snackbars,
 	dialog: FormDialog,
 }
@@ -253,7 +253,7 @@ class App extends React.Component {
 
 	render() {
 		const { sampleData, errorStates, data, isDialogOpen, isFormSuccess } = this.state
-		const ErrorComponent = errorComponentsMap[sampleData ? sampleData[0].popupType : 'snackbar']
+		const PopupComponent = popupComponentsMap[sampleData ? sampleData[0].popupType : 'snackbar']
 
 		return (
 			<div>
@@ -281,8 +281,8 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
-					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly!" contentTitle="Error" buttonText="Okay" />
-					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={isFormSuccess} variant="success" message="Thank you for Registering!" contentText="Thank you for Registering!" contentTitle="Success" buttonText="Okay" />
+					<PopupComponent handleDialogClose={this.handleDialogClose} isOpen={isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly!" contentTitle="Error" buttonText="Okay" />
+					<PopupComponent handleDialogClose={this.handleDialogClose} isOpen={isFormSuccess} variant="success" message="Thank you for Registering!" contentText="Thank you for Registering!" contentTitle="Success" buttonText="Okay" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>
