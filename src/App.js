@@ -6,11 +6,12 @@ import FormRadioGroup from './components/RadioGroup'
 import FormSelect from './components/Select'
 import FormStepper from './components/Stepper'
 import TextField from './components/TextField'
+import FormDialog from './components/Dialogs'
 
 import { Button, FormGroup } from '@material-ui/core'
 
-import sampleData from './sampleData'
-// import sampleData from './singleFormData'
+// import sampleData from './sampleData'
+import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
@@ -25,6 +26,7 @@ class App extends React.Component {
 			errorStates: {},
 			formsErrorFlag: [],
 			sampleData: sampleData,
+			isDialogOpen: false,
 		};
 	}
 
@@ -67,8 +69,13 @@ class App extends React.Component {
 		else {
 			if(this.state.sampleData.length > 1) {
             	this.setState({
+					isDialogOpen: true,
 					currentCount: this.state.currentCount - 1,
 					data: this.state.userData[this.state.currentCount -1],
+				})
+			} else {
+				this.setState({
+					isDialogOpen: true,
 				})
 			}
         }
@@ -254,6 +261,7 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
+					<FormDialog isOpen={this.state.isDialogOpen} contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>
