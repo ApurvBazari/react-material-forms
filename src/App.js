@@ -1,6 +1,7 @@
 import React from 'react';
 
 import CheckboxGroup from './components/Checkbox'
+import MultipleButton from './components/MultipleButton'
 import {
         Button,
         TextField as TextInput,
@@ -25,8 +26,8 @@ import {
 import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft'
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight'
 
-//import sampleData from './sampleData'
-import sampleData from './singleFormData'
+import sampleData from './sampleData'
+// import sampleData from './singleFormData'
 
 import FileInput from './components/FileInput/'
 
@@ -268,58 +269,58 @@ export class FormStepper extends React.PureComponent {
 	}
 }
 
-export class MultipleButton extends React.PureComponent {
-	constructor(props) {
-		super(props)
-		this.state = {
-			activeStep: 0,
-		}
-	}
+// export class MultipleButton extends React.PureComponent {
+// 	constructor(props) {
+// 		super(props)
+// 		this.state = {
+// 			activeStep: 0,
+// 		}
+// 	}
 
-	handleBack = () => {
-		this.setState({
-			activeStep: this.state.activeStep - 1,
-        });
-        this.props.handleBack(this.state.activeStep)
-	};
+// 	handleBack = () => {
+// 		this.setState({
+// 			activeStep: this.state.activeStep - 1,
+//         });
+//         this.props.handleBack(this.state.activeStep)
+// 	};
 
-	handleNext = () => {
-        const { formLength } = this.props
-        if(this.state.activeStep + 1 < formLength) {
-            this.setState({
-                activeStep: this.state.activeStep + 1,
-            });
-        }
-        this.props.handleNext()
-	};
+// 	handleNext = () => {
+//         const { formLength } = this.props
+//         if(this.state.activeStep + 1 < formLength) {
+//             this.setState({
+//                 activeStep: this.state.activeStep + 1,
+//             });
+//         }
+//         this.props.handleNext()
+// 	};
 
-	render() {
-		const { formLength } = this.props
-        const { activeStep } = this.state
+// 	render() {
+// 		const { formLength } = this.props
+//         const { activeStep } = this.state
 
-		return (
-			<MobileStepper
-				variant="dots"
-				steps={formLength}
-				activeStep={this.state.activeStep}
-				className="root"
-				style={{background: '#e7e7e7'}}
-				nextButton={
-					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext}>
-						{formLength === activeStep + 1 ? 'Submit' :  'Next'}
-                        {formLength > activeStep + 1 && (<KeyboardArrowRight />)}
-					</Button>
-				}
-				backButton= {
-					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
-                        <KeyboardArrowLeft />
-						Back
-					</Button>
-				}
-			/>
-		)
-	}
-}
+// 		return (
+// 			<MobileStepper
+// 				variant="dots"
+// 				steps={formLength}
+// 				activeStep={this.state.activeStep}
+// 				className="root"
+// 				style={{background: '#e7e7e7'}}
+// 				nextButton={
+// 					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleNext}>
+// 						{formLength === activeStep + 1 ? 'Submit' :  'Next'}
+//                         {formLength > activeStep + 1 && (<KeyboardArrowRight />)}
+// 					</Button>
+// 				}
+// 				backButton= {
+// 					<Button style={{background: '#e7e7e7'}} size="small" onClick={this.handleBack} disabled={this.state.activeStep === 0} >
+//                         <KeyboardArrowLeft />
+// 						Back
+// 					</Button>
+// 				}
+// 			/>
+// 		)
+// 	}
+// }
 
 class App extends React.Component {
 	constructor(props) {
