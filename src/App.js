@@ -18,7 +18,6 @@ import sampleData from './singleFormData'
 const errorComponentsMap = {
 	snackbar: Snackbars,
 	dialog: FormDialog,
-	default: Snackbars,
 }
 
 class App extends React.Component {
@@ -93,30 +92,27 @@ class App extends React.Component {
 	};
 
     onSubmit = (data) => {
-		console.log(data)
 		if(!data.length) {
 			const keys = Object.keys(data)
 			let formData = []
 			keys.forEach(key => {
-				console.log(key)
 				const formKey = key.split('-')[0]
 				formData[formKey] = data[key]
 			})
-			console.log(formData)
+			//console.log('Single Form Data-------->', formData)
 			// this.props.onSubmit(formData)
 		} else {
 			const completeFormData = data.map(form => {
 				const keys = Object.keys(form)
 				let formData = []
 				keys.forEach(key => {
-					console.log(key)
 					const formKey = key.split('-')[0]
 					formData[formKey] = form[key]
 				})
 				return formData
 			})
 			// this.props.onSubmit(completeFormData)
-			console.log(completeFormData)
+			//console.log(completeFormData)
 		}
 	}
 
@@ -139,7 +135,8 @@ class App extends React.Component {
 				...this.state.data,
 				[name]: value,
 			}
-		})
+		},
+		() => this.validateCurrentForm(this.state.currentCount))
 	}
 
 	onCheckboxGroupClick = (name, value) => {
@@ -148,7 +145,8 @@ class App extends React.Component {
 				...this.state.data,
 				[name]: value
 			}
-		})
+		},
+		() => this.validateCurrentForm(this.state.currentCount))
 	}
 
 	onSelectClick = (name, value) => {
@@ -157,17 +155,18 @@ class App extends React.Component {
 				...this.state.data,
 				[name]: value
 			}
-		})
+		},
+		() => this.validateCurrentForm(this.state.currentCount))
 	}
 
 	onFileUpload = (name, blob) => {
-		console.log('Now setState and show preview option')
 		this.setState({
 			data: {
 				...this.state.data,
 				[name]: blob
 			}
-		})
+		},
+		() => this.validateCurrentForm(this.state.currentCount))
 	}
 
 	handleMultiBack = () => {
@@ -226,6 +225,8 @@ class App extends React.Component {
 						...errors,
 						[name]: 'Input is Required'
 					}
+				} else {
+					delete errors[name]
 				}
 			}
 			if (field.pattern) {
@@ -252,7 +253,7 @@ class App extends React.Component {
 
 	render() {
 		const { sampleData, errorStates, data, isDialogOpen, isFormSuccess } = this.state
-		const ErrorComponent = errorComponentsMap[sampleData ? sampleData[0].errorType : 'snackbar']
+		const ErrorComponent = errorComponentsMap[sampleData ? sampleData[0].popupType : 'snackbar']
 
 		return (
 			<div>

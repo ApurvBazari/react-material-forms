@@ -36,7 +36,6 @@ export default class TextField extends React.PureComponent {
     }
 
     onBlur = (e, name, pattern, errorText) => {
-        console.log('Now validate')
         const value = e.target.value
         const isValid = this.validateField(name, value, pattern, errorText)
         isValid ? this.props.onBlur(null, value, name) : this.props.onBlur(errorText, value, name)

@@ -1,7 +1,7 @@
 const sampleData = [{
     "label": "Sample Form",
     "name": "form1",
-    "errorType": "snackbar",
+    "popupType": "snackbar",
     "registerFields": [
         {
             "name": "name",
@@ -78,28 +78,6 @@ const sampleData = [{
                 }
             ]
         },
-        // {
-        //     "name": "password",
-        //     "type": "password",
-        //     "label": "Password",
-        //     "placeholder": "set your password",
-        //     "pattern": "[0-9a-zA-Z]{6,}",
-        //     "isRequired": true,
-        //     "errorText": "Minimum of 6 charecters is required"
-        // },
-        // {
-        //     "name": "passwordCheck",
-        //     "type": "password",
-        //     "label": "Re-enter Password",
-        //     "placeholder": "re-enter your password",
-        //     "isRequired": true
-        // },
-        // {
-        //     "name": "car",
-        //     "type": "string",
-        //     "label": "Car Model",
-        //     "placeholder": "name of the car you have"
-        // }
     ]}
 ]
 
