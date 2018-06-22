@@ -12,8 +12,8 @@ import Snackbars from './components/Snackbar/'
 
 import { Button, FormGroup } from '@material-ui/core'
 
-import sampleData from './sampleData'
-//import sampleData from './singleFormData'
+//import sampleData from './sampleData'
+import sampleData from './singleFormData'
 
 const errorComponentsMap = {
 	snackbar: Snackbars,
@@ -33,6 +33,7 @@ class App extends React.Component {
 			formsErrorFlag: [],
 			sampleData: sampleData,
 			isDialogOpen: false,
+			isFormSuccess: false,
 		};
 	}
 
@@ -71,8 +72,12 @@ class App extends React.Component {
         } else {
             isValid = this.validateCurrentForm(this.state.currentCount);
         }
-        if (isValid) this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
-		else {
+		if (isValid) {
+			this.onSubmit(this.state.userData.length > 0 ? this.state.userData : this.state.data);
+			this.setState({
+				isFormSuccess: true
+			})
+		} else {
 			if(this.state.sampleData.length > 1) {
             	this.setState({
 					isDialogOpen: true,
@@ -98,7 +103,7 @@ class App extends React.Component {
 				formData[formKey] = data[key]
 			})
 			console.log(formData)
-			this.props.onSubmit(formData)
+			// this.props.onSubmit(formData)
 		} else {
 			const completeFormData = data.map(form => {
 				const keys = Object.keys(form)
@@ -110,7 +115,7 @@ class App extends React.Component {
 				})
 				return formData
 			})
-			this.props.onSubmit(completeFormData)
+			// this.props.onSubmit(completeFormData)
 			console.log(completeFormData)
 		}
 	}
@@ -200,6 +205,12 @@ class App extends React.Component {
 		return result
 	}
 
+	handleDialogClose = () => {
+		this.setState({
+			isDialogOpen: false,
+		})
+	}
+
 	validateCurrentForm = (currentForm) => {
 		const formData = this.state.sampleData[currentForm]
 		let isValid = true
@@ -269,7 +280,8 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
-					<ErrorComponent isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" />
+					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly!" contentTitle="Error" buttonText="Okay" />
+					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={this.state.isFormSuccess} variant="success" message="Thank you for Registering!" contentText="Thank you for Registering!" contentTitle="Success" buttonText="Okay" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>

@@ -21,16 +21,11 @@ export default class FormDialog extends React.Component {
         }
     }
 
-    handleOpen = () => {
-        this.setState({
-            open: true
-        })
-    }
-
     handleClose = () => {
         this.setState({
             open: false
         })
+        this.props.handleDialogClose()
     }
 
     render() {

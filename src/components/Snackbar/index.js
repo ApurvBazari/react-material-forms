@@ -112,6 +112,7 @@ class Snackbars extends React.Component {
     }
 
     this.setState({ open: false });
+    this.props.handleDialogClose()
   };
 
   render() {
