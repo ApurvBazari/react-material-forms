@@ -8,11 +8,12 @@ import FormStepper from './components/Stepper'
 import TextField from './components/TextField'
 import FormDialog from './components/Dialogs'
 import FileInput from './components/FileInput/'
+import Snackbars from './components/Snackbar/'
 
 import { Button, FormGroup } from '@material-ui/core'
 
-// import sampleData from './sampleData'
-import sampleData from './singleFormData'
+import sampleData from './sampleData'
+//import sampleData from './singleFormData'
 
 class App extends React.Component {
 	constructor(props) {
@@ -260,7 +261,8 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
-					<FormDialog isOpen={this.state.isDialogOpen} contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" />
+					{/* <FormDialog isOpen={this.state.isDialogOpen} contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" /> */}
+					<Snackbars isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>
