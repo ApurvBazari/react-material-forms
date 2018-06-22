@@ -1,6 +1,7 @@
 const sampleData = [{
     "label": "Personal Details",
     "name": "form1",
+    "errorType": 'snackbar',
     "registerFields": [
         {
             "name": "name",
@@ -103,6 +104,7 @@ const sampleData = [{
     {
     "label": "Event Details",
     "name": "form2",
+    "errorType": "snackbar",
     "registerFields": [
         {
             "name": "name",
@@ -196,6 +198,7 @@ const sampleData = [{
     {
     "label": "Partner Details",
     "name": "form3",
+    "errorType": "snackbar",
     "registerFields": [
         {
             "name": "name",

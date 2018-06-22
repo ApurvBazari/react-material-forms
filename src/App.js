@@ -15,6 +15,12 @@ import { Button, FormGroup } from '@material-ui/core'
 import sampleData from './sampleData'
 //import sampleData from './singleFormData'
 
+const errorComponentsMap = {
+	snackbar: Snackbars,
+	dialog: FormDialog,
+	default: Snackbars,
+}
+
 class App extends React.Component {
 	constructor(props) {
 		super(props);
@@ -234,6 +240,8 @@ class App extends React.Component {
 	}
 
 	render() {
+		const { sampleData } = this.state
+		const ErrorComponent = errorComponentsMap[sampleData ? sampleData[0].errorType : 'snackbar']
 
 		return (
 			<div>
@@ -261,8 +269,7 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
-					{/* <FormDialog isOpen={this.state.isDialogOpen} contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" /> */}
-					<Snackbars isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" />
+					<ErrorComponent isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly" contentTitle="Error" buttonText="Okay" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>
