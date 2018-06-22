@@ -59,7 +59,7 @@ const sampleData = [{
             "name": "gender",
             "type": "radioGroup",
             "label": "Gender",
-            "required": true,
+            "isRequired": true,
             "payload": [
                 {
                     "name": "male",

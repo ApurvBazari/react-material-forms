@@ -1,5 +1,5 @@
 import React from 'react'
-import { FormControl, InputLabel, Select, Input, MenuItem} from '@material-ui/core'
+import { FormControl, InputLabel, Select, Input, MenuItem, FormHelperText } from '@material-ui/core'
 
 export default class FormSelect extends React.PureComponent {
 	constructor(props) {
@@ -17,13 +17,14 @@ export default class FormSelect extends React.PureComponent {
 	}
 
 	render() {
-		const {fieldData, name} = this.props
+		const {fieldData, name, errorStates} = this.props
 		const { payload, isMultiple } = fieldData
         const {initialValue} = this.state
+		
 		return (
 			<div>
 				<FormControl component="fieldset" fullWidth>
-					<InputLabel htmlFor = "select-multiple">{fieldData.label}</InputLabel>
+					<InputLabel error={errorStates[name] ? true : false} htmlFor = "select-multiple">{fieldData.label}</InputLabel>
 					<Select
 						multiple = {isMultiple ? true : false}
 						value = {!!initialValue[name] ? (this.state.value.length > 0 ? this.state.value : initialValue[name]) : this.state.value
@@ -37,6 +38,9 @@ export default class FormSelect extends React.PureComponent {
 						</MenuItem>
 					))}
 					</Select>
+					{errorStates[name] && (<FormHelperText style={{ color: 'red'}}>
+						{errorStates[name]}
+					</FormHelperText>)}
 				</FormControl>
 			</div>
 		)

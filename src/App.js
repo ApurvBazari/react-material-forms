@@ -251,7 +251,7 @@ class App extends React.Component {
 	}
 
 	render() {
-		const { sampleData } = this.state
+		const { sampleData, errorStates, data, isDialogOpen, isFormSuccess } = this.state
 		const ErrorComponent = errorComponentsMap[sampleData ? sampleData[0].errorType : 'snackbar']
 
 		return (
@@ -263,13 +263,13 @@ class App extends React.Component {
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-                                case 'string': return <TextField autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'number': return <TextField autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'password': return <TextField autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onBlur={this.onTextBlur} />
-                                case 'radioGroup': return <FormRadioGroup autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onRadioChange} />;
-                                case 'checkboxGroup': return <CheckboxGroup autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onClick={this.onCheckboxGroupClick} />;
-                                case 'select': return <FormSelect autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data}  fieldData={field} errorStates={this.state.errorStates} onClick={this.onSelectClick} />;
-                                case 'file': return <FileInput autoFocus={this.state.errorStates[key]} name={key} key={key} data={this.state.data} fieldData={field} errorStates={this.state.errorStates} onChange={this.onFileUpload} />;
+                                case 'string': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
+                                case 'number': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
+                                case 'password': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
+                                case 'radioGroup': return <FormRadioGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onRadioChange} />;
+                                case 'checkboxGroup': return <CheckboxGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onClick={this.onCheckboxGroupClick} />;
+                                case 'select': return <FormSelect autoFocus={errorStates[key]} name={key} key={key} data={data}  fieldData={field} errorStates={errorStates} onClick={this.onSelectClick} />;
+                                case 'file': return <FileInput autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onFileUpload} />;
                                 default: return null
                             }
 						})}
@@ -280,8 +280,8 @@ class App extends React.Component {
 						Submit
 					</Button>)}
 					{sampleData.length>1 &&(<MultipleButton formLength={sampleData.length} handleBack={this.handleMultiBack} handleNext={this.handleMultiNext}/>)}
-					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={this.state.isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly!" contentTitle="Error" buttonText="Okay" />
-					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={this.state.isFormSuccess} variant="success" message="Thank you for Registering!" contentText="Thank you for Registering!" contentTitle="Success" buttonText="Okay" />
+					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={isDialogOpen} variant="error" message="Please fill the Form correctly!" contentText="Please fill the Forms Correctly!" contentTitle="Error" buttonText="Okay" />
+					<ErrorComponent handleDialogClose={this.handleDialogClose} isOpen={isFormSuccess} variant="success" message="Thank you for Registering!" contentText="Thank you for Registering!" contentTitle="Success" buttonText="Okay" />
 					{!sampleData[0].registerFields && <div>Could not load Form from the server!!</div>}
 				</div>
 			</div>

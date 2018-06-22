@@ -23,7 +23,7 @@ export default class FormRadioGroup extends React.PureComponent {
     return (
 	<div className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 		<FormControl component="fieldset" required={fieldData.required} className="formControl">
-			<FormLabel component="legend">{fieldData.label}</FormLabel>
+			<FormLabel error={errorStates[name] ? true : false} component="legend">{fieldData.label}</FormLabel>
 			<RadioGroup className="group" aria-label={fieldData.label} name={name} value={this.state.value} onChange={e => this.handleChange(e, name)}>
 				{fieldData.payload.map(field => {
 					return <FormControlLabel
@@ -37,7 +37,7 @@ export default class FormRadioGroup extends React.PureComponent {
 			</RadioGroup>
 		</FormControl>
 		{errorStates[name] && (
-			<FormHelperText style={{ color: 'red', position: 'absolute', left: '-10px', bottom: '-10px' }}>
+			<FormHelperText style={{ color: 'red' }}>
 				{errorStates[name]}
 			</FormHelperText>
 		)}

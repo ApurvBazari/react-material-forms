@@ -35,7 +35,7 @@ export default class CheckboxGroup extends React.PureComponent {
 		return (
 			<div key={name} className="root" style={{ marginTop: '20px', paddingTop: '20px', width: '100%', position: 'relative'}}>
 				<FormControl component="fieldset">
-					<FormLabel component="legend">{fieldData.label}</FormLabel>
+					<FormLabel error={errorStates[name] ? true : false} component="legend">{fieldData.label}</FormLabel>
 						{fieldData.payload.map(field => {
 							return <FormControlLabel
                                 key={field}
@@ -50,7 +50,7 @@ export default class CheckboxGroup extends React.PureComponent {
 								label={field}
 							/>
 						})}
-					{errorStates[name] && (<FormHelperText>{errorStates[name]}</FormHelperText>)}
+					{errorStates[name] && (<FormHelperText style={{ color: 'red' }}>{errorStates[name]}</FormHelperText>)}
 				</FormControl>
 			</div>
 		);

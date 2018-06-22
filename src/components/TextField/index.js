@@ -64,9 +64,9 @@ export default class TextField extends React.PureComponent {
                     />
 				}
 			/>
-			<FormHelperText style={{ color: 'red'}}>
+			{errorStates[name] && (<FormHelperText style={{ color: 'red'}}>
 				{errorStates[name]}
-			</FormHelperText>
+			</FormHelperText>)}
 		</div>
 		)
 	}

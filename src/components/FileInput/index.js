@@ -1,7 +1,7 @@
 import React from 'react'
 import FileUpload from '@material-ui/icons/FileUpload';
 import Button from '@material-ui/core/Button';
-import TextInput from '@material-ui/core/TextField';
+import { TextField as TextInput, FormHelperText} from '@material-ui/core';
 
 import { withStyles } from '@material-ui/core/styles';
 import {fileInputStyles} from './__style'
@@ -27,11 +27,12 @@ class FileInput extends React.PureComponent {
     }
 
     render() {
-        const {classes, fieldData, name} = this.props
+        const { classes, fieldData, name, errorStates } = this.props
         return (
             <div style={{marginTop: '20px', paddingTop: '20px'}}>
             <div style={{display: "flex", position: 'relative'}}>
                 <TextInput
+                    error={errorStates[name] ? true : false}
                     label={fieldData.label}
                     defaultValue={fieldData.placeholder}
                     helperText={fieldData.helperText}
@@ -43,6 +44,9 @@ class FileInput extends React.PureComponent {
                     <FileUpload className={classes.rightIcon} />
                 </Button>
             </div>
+            {errorStates[name] && (<FormHelperText style={{ color: 'red'}}>
+				{errorStates[name]}
+			</FormHelperText>)}
             <div style={{marginTop: '10px'}}>
                 {this.state.file && (
                     <div className="preview" style={{textAlign: 'center'}}>
