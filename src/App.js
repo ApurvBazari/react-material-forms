@@ -7,13 +7,12 @@ import FormSelect from './components/Select'
 import FormStepper from './components/Stepper'
 import TextField from './components/TextField'
 import FormDialog from './components/Dialogs'
+import FileInput from './components/FileInput/'
 
 import { Button, FormGroup } from '@material-ui/core'
 
 // import sampleData from './sampleData'
 import sampleData from './singleFormData'
-
-import FileInput from './components/FileInput/'
 
 class App extends React.Component {
 	constructor(props) {
