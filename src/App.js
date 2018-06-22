@@ -129,6 +129,26 @@ class App extends React.Component {
 		})
 	}
 
+	validateField = (fieldName) => {
+		const formData = this.state.sampleData[this.state.currentCount]
+		let isValid = false
+		let errors = this.state.errorStates
+		formData.registerFields.forEach(field => {
+            const {data} = this.state
+            const name = `${field.name}-${this.state.currentCount}`
+			if (name === fieldName && field.isRequired) {
+				const flag = data ? ((data[name] === '' || !data[name]) ? false : true) : false;
+				if (flag) {
+					isValid = true
+					delete errors[name]
+				}
+			}
+		})
+		if(isValid) {
+			this.setState({errors})
+		}
+	}
+
 	onRadioChange = (name, value) => {
 		this.setState({
 			data: {
@@ -136,7 +156,7 @@ class App extends React.Component {
 				[name]: value,
 			}
 		},
-		() => this.validateCurrentForm(this.state.currentCount))
+		() => this.validateField(name))
 	}
 
 	onCheckboxGroupClick = (name, value) => {
@@ -146,7 +166,7 @@ class App extends React.Component {
 				[name]: value
 			}
 		},
-		() => this.validateCurrentForm(this.state.currentCount))
+		() => this.validateField(name))
 	}
 
 	onSelectClick = (name, value) => {
@@ -156,7 +176,7 @@ class App extends React.Component {
 				[name]: value
 			}
 		},
-		() => this.validateCurrentForm(this.state.currentCount))
+		() => this.validateField(name))
 	}
 
 	onFileUpload = (name, blob) => {
@@ -166,7 +186,7 @@ class App extends React.Component {
 				[name]: blob
 			}
 		},
-		() => this.validateCurrentForm(this.state.currentCount))
+		() => this.validateField(name))
 	}
 
 	handleMultiBack = () => {
