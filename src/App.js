@@ -9,6 +9,7 @@ import TextField from './components/TextField'
 import FormDialog from './components/Dialogs'
 import FileInput from './components/FileInput/'
 import Snackbars from './components/Snackbar/'
+import DateTime from './components/DateTimePicker'
 
 import { Button, FormGroup } from '@material-ui/core'
 
@@ -112,7 +113,7 @@ class App extends React.Component {
 				return formData
 			})
 			// this.props.onSubmit(completeFormData)
-			//console.log(completeFormData)
+			console.log(completeFormData)
 		}
 	}
 
@@ -177,6 +178,10 @@ class App extends React.Component {
 			}
 		},
 		() => this.validateField(name))
+	}
+
+	onDateChange = (name, value) => {
+		console.log(name, value)
 	}
 
 	onFileUpload = (name, blob) => {
@@ -290,9 +295,12 @@ class App extends React.Component {
                                 case 'radioGroup': return <FormRadioGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect autoFocus={errorStates[key]} name={key} key={key} data={data}  fieldData={field} errorStates={errorStates} onClick={this.onSelectClick} />;
-                                case 'file': return <FileInput autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onFileUpload} />;
+								case 'file': return <FileInput autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onFileUpload} />;
+								case 'DateTime': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="DateTime" />
+								case 'Date': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="Date" />
+								case 'Time': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="Time" />
                                 default: return null
-                            }
+							}
 						})}
 					</FormGroup>
 				</div>)}

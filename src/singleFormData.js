@@ -10,6 +10,14 @@ const sampleData = [{
             "placeholder": "Enter your first & last name",
             "isRequired": true
         },
+        {
+            "name": "DOB",
+            "type": "DateTime",
+            "label": "Date of Birth",
+            "placeholder": "enter your Date of Birth",
+            "isRequired": true,
+            "errorText": "Birth Date is required!"
+        },
         // {
         //     "name": "email",
         //     "type": "string",
