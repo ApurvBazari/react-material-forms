@@ -13,8 +13,8 @@ import DateTime from './components/DateTimePicker'
 
 import { Button, FormGroup } from '@material-ui/core'
 
-//import sampleData from './sampleData'
-import sampleData from './singleFormData'
+import sampleData from './sampleData'
+//import sampleData from './singleFormData'
 
 const popupComponentsMap = {
 	snackbar: Snackbars,
@@ -289,8 +289,8 @@ class App extends React.Component {
 						{sampleData[this.state.currentCount].registerFields && sampleData[this.state.currentCount].registerFields.map(field => {
 							const key = `${field.name}-${this.state.currentCount}`
 							switch(field.type) {
-                                case 'string': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
-                                case 'number': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
+                                case 'string':
+                                case 'number':
                                 case 'password': return <TextField autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onBlur={this.onTextBlur} />
                                 case 'radioGroup': return <FormRadioGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onRadioChange} />;
                                 case 'checkboxGroup': return <CheckboxGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onClick={this.onCheckboxGroupClick} />;
