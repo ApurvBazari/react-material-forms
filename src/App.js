@@ -296,9 +296,9 @@ class App extends React.Component {
                                 case 'checkboxGroup': return <CheckboxGroup autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onClick={this.onCheckboxGroupClick} />;
                                 case 'select': return <FormSelect autoFocus={errorStates[key]} name={key} key={key} data={data}  fieldData={field} errorStates={errorStates} onClick={this.onSelectClick} />;
 								case 'file': return <FileInput autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onChange={this.onFileUpload} />;
-								case 'DateTime': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="DateTime" />
-								case 'Date': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="Date" />
-								case 'Time': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange} component="Time" />
+								case 'DateTime':
+								case 'Date':
+								case 'Time': return <DateTime autoFocus={errorStates[key]} name={key} key={key} data={data} fieldData={field} errorStates={errorStates} onDateChange={this.onDateChange}/>
                                 default: return null
 							}
 						})}

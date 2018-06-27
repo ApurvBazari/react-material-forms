@@ -13,9 +13,10 @@ const sampleData = [{
         {
             "name": "DOB",
             "type": "DateTime",
+            "placeholder": "Enter your Date of Birth",
             "label": "Date of Birth",
-            "placeholder": "enter your Date of Birth",
             "isRequired": true,
+            "clearable":true,
             "errorText": "Birth Date is required!"
         },
         // {
@@ -50,7 +51,7 @@ const sampleData = [{
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "isRequired": true,
-            "fieldType": "switch",
+            "fieldType": "checkbox",
             "payload": ["sports", "games", "music"],
             "errorText": "Select atleast one Value"
         },
