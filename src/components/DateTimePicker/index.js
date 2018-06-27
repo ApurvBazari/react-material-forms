@@ -5,9 +5,7 @@ import TimePicker from 'material-ui-pickers/TimePicker';
 import DatePicker from 'material-ui-pickers/DatePicker';
 import DateTimePicker from 'material-ui-pickers/DateTimePicker';
 
-import leftIcon from '../../icons/arrow_left.svg'
-
-import { Icon } from '@material-ui/core'
+import { ChevronLeft, ChevronRight, AccessTime, DateRange } from '@material-ui/icons/'
 
 export default class DateTime extends PureComponent {
 constructor(props) {
@@ -58,10 +56,10 @@ handleDateChange = (date) => {
         disablePast={fieldData.disablePast}
         keyboard={fieldData.keyboard}
         //keyboardIcon={keyboardIcon}
-       // dateRangeIcon
-       leftArrowIcon={ <Icon> add_alarm </Icon>}
-       rightArrowIcon="keyboard_arrow_right"
-       timeIcon="access_time"
+      dateRangeIcon={<DateRange/>}
+       leftArrowIcon={ <ChevronLeft/>}
+       rightArrowIcon={ <ChevronRight /> }
+       timeIcon={<AccessTime/>}
         maxDate={fieldData.maxDate}
         minDate={fieldData.minDate}
         maxDateMessage={fieldData.maxDateMessage}
