@@ -47,7 +47,7 @@ const sampleData = [{
             "payload": ["English", "Urdu", "Hindi", "Bengali", "Marathi", "Hebrew"]
         },
         {
-            "name": "interests1",
+            "name": "interests",
             "type": "checkboxGroup",
             "label": "Choose your Interests : ",
             "isRequired": true,

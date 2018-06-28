@@ -13,8 +13,8 @@ import DateTime from './components/DateTimePicker'
 
 import { Button, FormGroup } from '@material-ui/core'
 
-import sampleData from './sampleData'
-//import sampleData from './singleFormData'
+//import sampleData from './sampleData'
+import sampleData from './singleFormData'
 
 const popupComponentsMap = {
 	snackbar: Snackbars,
@@ -100,7 +100,7 @@ class App extends React.Component {
 				const formKey = key.split('-')[0]
 				formData[formKey] = data[key]
 			})
-			//console.log('Single Form Data-------->', formData)
+			console.log('Single Form Data-------->', formData)
 			// this.props.onSubmit(formData)
 		} else {
 			const completeFormData = data.map(form => {
@@ -113,7 +113,7 @@ class App extends React.Component {
 				return formData
 			})
 			// this.props.onSubmit(completeFormData)
-			console.log(completeFormData)
+			console.log('Multi Form Data--->', completeFormData)
 		}
 	}
 
@@ -182,6 +182,33 @@ class App extends React.Component {
 
 	onDateChange = (name, value) => {
 		console.log(name, value)
+		const year = value.year()
+		const month = value.month() + 1
+		const date = value.date()
+		const day = value.day()
+		const monthString = value._locale._months[value.month()]
+		const shortMonthString = value._locale._monthsShort[value.month()]
+		const dayString = value._locale._weekdays[day]
+		const shortDayString = value._locale._weekdaysShort[day]
+		const minDayString = value._locale._weekdaysMin[day]
+		const time = value._d.toLocaleTimeString()
+		this.setState({
+			data : {
+				...this.state.data,
+				[name]: {
+					year,
+					month,
+					date,
+					day,
+					time,
+					monthString,
+					shortMonthString,
+					dayString,
+					shortDayString,
+					minDayString
+				}
+			}
+		})
 	}
 
 	onFileUpload = (name, blob) => {
